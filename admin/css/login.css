@@ -1,0 +1,46 @@
+body {
+        margin: 0;
+        padding: 0;
+        background: #636363;
+    }
+
+    .card {
+        width: 400px;
+        color: black;
+        top: 140px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        justify-content: center;
+        background-color: black;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .card-body {
+        align-items: center;
+
+    }
+
+    #text-admin {
+        margin-bottom: 30px;
+        color: #f7f7f7;
+    }
+
+    #typePasswordX {
+        text-align: center;
+        width: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        align-content: center;
+        transition: width .4s;
+    }
+    .btn {
+        transition: font-size .4s;
+    }
+
+    .btn:hover {
+        background-color: #f7f7f7;
+        color: black;
+        font-size: 23px;
+    }
