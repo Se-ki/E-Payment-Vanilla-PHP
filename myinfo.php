@@ -13,55 +13,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrapV5.3.0/bootstrap.min.css">
     <title>My info</title>
-    <style>
-        .modal-content {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            color: var(--bs-modal-color);
-            pointer-events: auto;
-            background-color: var(--bs-modal-bg);
-            background-clip: padding-box;
-            border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
-            border-radius: var(--bs-modal-border-radius);
-            outline: 0;
-        }
-
-        .modal {
-            position: fixed;
-            top: 130px;
-        }
-
-        /* Standard syntax */
-        @keyframes shake {
-
-            10%,
-            90% {
-                transform: translate3d(-1px, 0, 0);
-            }
-
-            20%,
-            80% {
-                transform: translate3d(2px, 0, 0);
-            }
-
-            30%,
-            50%,
-            70% {
-                transform: translate3d(-4px, 0, 0);
-            }
-
-            40%,
-            60% {
-                transform: translate3d(4px, 0, 0);
-            }
-        }
-
-        .apply-shake {
-            animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/myinfo.css">
 </head>
 
 <body>
@@ -232,27 +184,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
             </div>
     </section>
     <script src="./js/bootstrapV5.3.0/bootstrap.bundle.min.js"></script>
-    <script>
-        const modal = document.querySelector("div.modal");
-        const password = document.querySelector("input#newpass");
-        const confirm_password = document.querySelector("input#repeatpass");
-        const submit = document.querySelector("button#changepass");
-        submit.addEventListener("click", (e) => {
-            e.preventDefault();
-            if (password.value == "" && confirm_password.value == "") {
-                modal.classList.add("apply-shake");
-                document.querySelector('h5.modal-title').innerHTML = "Empty form!"
-            } else if (password.value != confirm_password.value) {
-                modal.classList.add("apply-shake");
-                document.querySelector('h5.modal-title').innerHTML = "Password Unmatched!"
-            }
-        });
-
-        modal.addEventListener("animationend", (e) => {
-            modal.classList.remove("apply-shake");
-        });
-
-    </script>
+    <script src="./js/myinfo.js"></script>
 </body>
 
 </html>

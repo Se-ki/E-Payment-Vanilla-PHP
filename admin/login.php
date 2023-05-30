@@ -8,59 +8,6 @@
     <link rel="stylesheet" href="../css/bootstrapV5.3.0/bootstrap.min.css">
     <link rel="stylesheet" href="./css/login.css">
     <title>Administrator</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #636363;
-        }
-
-        .card {
-            width: 330px;
-            color: black;
-            top: 200px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            justify-content: center;
-            background-color: black;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 20px 0 rgba(0, 0, 0, 0.19);
-        }
-
-        .card-body {
-            align-items: center;
-
-        }
-
-        #text-admin {
-            margin-bottom: 30px;
-            color: #f7f7f7;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: 900;
-            letter-spacing: 8px;
-        }
-
-        #typePasswordX {
-            text-align: center;
-            width: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            align-content: center;
-            transition: width .4s;
-        }
-
-        .btn {
-            transition: font-size .4s;
-            width: 15rem;
-        }
-
-        .btn:hover {
-            background-color: #f7f7f7;
-            color: black;
-            font-size: 23px;
-        }
-    </style>
 </head>
 
 <body>
@@ -72,7 +19,7 @@
     <?php if ($_GET['err']) { ?>
         <script>
             alert("Incorrect pin or empty!");
-        </script>       
+        </script>
     <?php } ?>
     <div class="card">
         <div class="card-box">
