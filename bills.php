@@ -24,18 +24,15 @@ if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
-
-        <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="" role="button"
-            data-bs-toggle="dropdown" data-mdb-toggle="dropdown" aria-expanded="false">
-            <span>
-                Christian Kyle,
-            </span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
-            <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
-        </ul>
-
+        <li class="nav-item dropdown" style="list-style-type:none; cursor: pointer;">
+            <a class="dropdown-toggle" data-bs-toggle="dropdown">
+                <?php echo $_SESSION['firstname'] ?>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
+                <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
+            </ul>
+        </li>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">

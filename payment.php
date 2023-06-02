@@ -21,7 +21,7 @@ $rows = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <title>Document</title>
+    <title>Payment</title>
     <link rel="stylesheet" href="./css/bills.css">
 </head>
 
@@ -30,24 +30,21 @@ $rows = mysqli_fetch_assoc($result);
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
-
-        <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="" role="button"
-            data-bs-toggle="dropdown" data-mdb-toggle="dropdown" aria-expanded="false">
-            <span>
-                Christian Kyle,
-            </span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
-            <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
-        </ul>
-
+        <li class="nav-item dropdown" style="list-style-type:none; cursor: pointer;">
+            <a class="dropdown-toggle" data-bs-toggle="dropdown">
+                <?php echo $_SESSION['firstname'] ?>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
+                <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
+            </ul>
+        </li>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div>
                 <a href="#" class="nav_logo">
-                    <i class='bi bi-cash-stack nav_logo-icon'>C</i>
+                    <img src="./img/icon.jpg" width="25px" height="25px" alt="">
                     <span class="nav_logo-name">CEIT E-PAYMENT
                     </span>
                 </a>

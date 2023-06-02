@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!empty($_SESSION['email'])) {
-    header('location: /project/project-system/home.php');
+    header('location: /project/project-system/bills.php');
 }
 ?>
 <!DOCTYPE html>

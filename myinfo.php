@@ -134,13 +134,12 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                             <hr>
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <p id="changeinput" style="margin: auto; position: relative; top: 8px">Change
+                                    <p id="changeinput">
                                         Password</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <button type="button" class="btn btn-outline-danger ms-0" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop"
-                                        style="position: relative; left: 26rem">Update</button>
+                                    <button type="button" class="btn btn-outline-danger ml-5" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">Change</button>
                                 </div>
                             </div>
                             <!-- modal -->
@@ -169,9 +168,9 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" id="changepass" name="submit-changepass"
-                                                        class="btn btn-primary">Change
-                                                        Password</button>
+                                                    <input type="submit" id="changepass" value="Change Password"
+                                                        name="submit-changepass" class="btn btn-primary">
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -184,7 +183,27 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
             </div>
     </section>
     <script src="./js/bootstrapV5.3.0/bootstrap.bundle.min.js"></script>
-    <script src="./js/myinfo.js"></script>
+    <script>
+        const modal = document.querySelector("div.modal");
+        const password = document.querySelector("input#newpass");
+        const confirm_password = document.querySelector("input#repeatpass");
+        const submit = document.querySelector("input#changepass");
+        submit.addEventListener("click", (e) => {
+            if (password.value == "" && confirm_password.value == "") {
+                e.preventDefault();
+                modal.classList.add("apply-shake");
+                document.querySelector('h5.modal-title').innerHTML = "Empty form!"
+            } else if (password.value != confirm_password.value) {
+                e.preventDefault();
+                modal.classList.add("apply-shake");
+                document.querySelector('h5.modal-title').innerHTML = "Password Unmatched!"
+            }
+        });
+
+        modal.addEventListener("animationend", (e) => {
+            modal.classList.remove("apply-shake");
+        });
+    </script>
 </body>
 
 </html>
