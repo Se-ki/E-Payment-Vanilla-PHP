@@ -4,7 +4,7 @@ function connect()
     $host = 'localhost';
     $user = 'root';
     $password = '';
-    $database = 'ceit';
+    $database = 'ceitonlinepaymentdb';
     $port = 3307;
 
     $connect = new mysqli($host, $user, $password, $database, $port);

@@ -64,10 +64,11 @@ maleSex.addEventListener('click', () => {
 
 const regex = new RegExp("[-0-9]");
 mobileNumber.addEventListener("beforeinput", (event) => {
+    console.log(contact.value);
     if (event.data != null && !regex.test(event.data)) {
+        event.preventDefault();
         mbnFeedBack.style.color = "#dc3545";
         mbnFeedBack.innerHTML = "Mobile numbers contains numerical numbers only."
-        event.preventDefault();
     } else {
         console.log(mobileNumber.value.length);
         if (mobileNumber.value.length > 10 || mobileNumber.value.length < 10) {

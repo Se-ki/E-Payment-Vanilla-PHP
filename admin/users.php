@@ -1,11 +1,13 @@
 <?php
+require "../functions/database.php";
 session_start();
-if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
+if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
-$i = 0;
-require "./functions/bills.php";
-date_default_timezone_set('Asia/Manila');
+$num = 0;
+$connection = connect();
+$sql = "SELECT * FROM student_signup ORDER BY student_lname";
+$query = mysqli_query($connection, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,15 +16,13 @@ date_default_timezone_set('Asia/Manila');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- transaction resources -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- sidebar resources -->
+    <!-- Google Fonts -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link rel="stylesheet" href="./css/bootstrapV5.3.0/bootstrap.min.css">
-    <title>Bills</title>
-    <!-- <link rel="stylesheet" href="./css/bills.css"> -->
+    <link rel="stylesheet" href="../css/bootstrapV5.3.0/bootstrap.min.css">
+    <title>Admin | Users</title>
+    <!-- <link rel="stylesheet" href="./css/main.css"> -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
@@ -173,6 +173,7 @@ date_default_timezone_set('Asia/Manila');
             height: 100vh
         }
 
+
         @media screen and (min-width: 768px) {
             body {
                 margin: calc(var(--header-height) + 1rem) 0 0 0;
@@ -206,164 +207,111 @@ date_default_timezone_set('Asia/Manila');
                 padding-left: calc(var(--nav-width) + 188px)
             }
         }
-
-        .nav-item {
-            list-style-type: none;
-            cursor: pointer;
-        }
-
-        th,
-        td {
-            text-align: center;
-        }
     </style>
 </head>
-<?php if (isset($_GET['ref'])) { ?>
-    <script>alert("The reference number that you've entered was already used.")</script>
-<?php } ?>
 
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
-        <li class="nav-item dropdown" style="list-style-type:none; cursor: pointer;">
-            <a class="dropdown-toggle" data-bs-toggle="dropdown">
-                <?php echo $_SESSION['firstname'] ?>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
-                <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
-            </ul>
-        </li>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div>
                 <a href="#" class="nav_logo">
-                    <img src="./img/icon.jpg" width="25px" height="25px" alt="">
-                    <span class="nav_logo-name" style="font:bolder">CEIT E-PAYMENT
+                    <img src="../img/ava3.png" width="25px" height=25px"></img><span class="nav_logo-name">ADMIN
                     </span>
+                    <!-- <img src="../img/logo.jpg" width="12%" height="80%" alt=""> -->
+                </a>
+                <a href="./main.php" class="nav_link">
+                    <i class='bx bx-grid-alt nav_icon'></i>
+                    <span class="nav_name">Main</span>
                 </a>
                 <div class="nav_list">
-                    <a href="./bills.php" class="nav_link active">
-                        <i class='bx bx-grid-alt nav_icon'></i>
+                    <a href="./bills.php" class="nav_link">
+                        <i class='bx bx-list-plus nav_icon'></i>
                         <span class="nav_name">Bills</span>
                     </a>
-                    <a href="./transaction.php" class="nav_link">
-                        <i class='bx bx-list-ol nav_icon'></i>
-                        <span class="nav_name">Transaction</span>
+                    <a href="./users.php" class="nav_link active">
+                        <i class='bx bx-user nav_icon'></i>
+                        <span class="nav_name">Users</span>
+                    </a>
+                    <a href="./paid.php" class="nav_link">
+                        <i class='bx bxs-user-check nav_icon'></i>
+                        <span class="nav_name">Paid</span>
+                    </a>
+                    <a href="./logs.php" class="nav_link">
+                        <i class='bx bx-group nav_icon'></i>
+                        <span class="nav_name">Logs</span>
                     </a>
                 </div>
-            </div> <a href="./functions/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span
+            </div> <a href="./admin_function/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span
                     class="nav_name">Logout</span> </a>
         </nav>
     </div>
     <!--Container Main start-->
     <div class="height-100 bg-light">
-        <h4>Bills</h4>
+        <h4>Users</h4>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Date Posted</th>
-                        <th scope="col">Deadline</th>
-                        <th scope="col">Encoded By</th>
-                        <th scope="col">Action</th>
-
+                        <th scope="col">School ID</th>
+                        <th scope="col">Fullname</th>
+                        <th scope="col">Sex</th>
+                        <th scope="col">Program</th>
+                        <th scope="col">Year Level</th>
+                        <th scope="col">Mobile Number</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Date Created</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = view($result)) { ?>
+                    <?php while ($row = $query->fetch_assoc()) { ?>
                     <tr>
                         <td>
-                                <?php echo $i += 1 ?>
+                                <?php echo $num = $num + 1 ?>
                         </td>
                         <td>
-                                <?php echo $row['bill_description'] ?>
+                                <?php echo $row['student_schoolid'] ?>
                         </td>
                         <td>
-                                <?php echo $row['bill_amount'] ?>
+                                <?php echo $row['student_fname'] . " " . $row['student_lname'] ?>
                         </td>
                         <td>
-                                <?php
-                                $date = date_create($row['bill_publish']);
-                                echo date_format($date, "F d, Y h:i:s A");
-                                ?>
+                                <?php echo $row['student_gender'] ?>
                         </td>
                         <td>
-                                <?php
-                                $date = date_create($row['bill_deadline']);
-                                $deadline = date_format($date, "F d, Y");
-                                $current = date("F d, Y");
-                                $_deadline = strtotime($deadline);
-                                $_current = strtotime($current);
-                                if ($_current > $_deadline || $_current == $_deadline) {
-                                    echo '<p class="text mb-0" style="color:red;">' . $deadline . '</p>';
-                                    echo '<p class="small text mb-0" style="color:red;">Deadline na doy bayad na!</p>';
-                                } else {
-                                    echo $deadline;
-                                }
-                                ?>
+                                <?php echo $row['student_program'] ?>
                         </td>
                         <td>
-                                <?php echo $row['admin_name'] ?>
+                                <?php echo $row['student_yearlevel'] ?>
                         </td>
                         <td>
-                            <a href="#pay" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
-                                id="custId" data-id="<?php echo $row['bill_id'] ?>">
-                                    Pay
-                                </a>
-                            </td>
-                        </tr>
+                                <?php echo $row['student_mobilenumber'] ?>
+                        </td>
+                        <td>
+                                <?php echo $row['student_address'] ?>
+                        </td>
+                        <td>
+                                <?php echo $row['student_email'] ?>
+                        </td>
+                        <td>
+                                <?php echo $row['student_created'] ?>
+                        </td>
+                    </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="pay" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title" id="staticBackdropLabel"></span>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&times;</button>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <!-- //Here Will show the Data -->
-                    <div class="fetched-data">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!--Container Main end-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="./js/bills.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        //modal
-        $(document).ready(function () {
-            $('#pay').on('show.bs.modal', function (e) {
-                var rowid = $(e.relatedTarget).data('id');
-                $.ajax({
-                    type: 'post',
-                    url: 'payment.php', //Here you will fetch records 
-                    data: 'rowid=' + rowid, //Pass $id
-                    success: function (data) {
-                        $('.fetched-data').html(data);//Show fetched data from database
-                    }
-                });
-            });
-        });
-
-        // side bar code
         document.addEventListener("DOMContentLoaded", function (event) {
 
             const showNavbar = (toggleId, navId, bodyId, headerId) => {

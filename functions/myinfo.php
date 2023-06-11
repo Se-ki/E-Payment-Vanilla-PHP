@@ -8,7 +8,7 @@ function passwordNotEmpty($changepass)
         header('location: /project/project-system/myinfo.php');
     } else {
         $connection = connect();
-        $stmt = $connection->prepare("UPDATE user_info SET password=? WHERE school_id=?");
+        $stmt = $connection->prepare("UPDATE student_signup SET student_password=? WHERE student_schoolid=?");
         $stmt->bind_param('ss', $changepass, $_SESSION['school_id']);
         $stmt->execute();
         header('location: /project/project-system/myinfo.php');

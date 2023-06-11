@@ -1,3 +1,19 @@
+//modal
+$(document).ready(function () {
+    $('#myModal').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        $.ajax({
+            type: 'post',
+            url: 'payment.php', //Here you will fetch records 
+            data: 'rowid=' + rowid, //Pass $id
+            success: function (data) {
+                $('.fetched-data').html(data);//Show fetched data from database
+            }
+        });
+    });
+});
+
+// side bar code
 document.addEventListener("DOMContentLoaded", function (event) {
 
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
@@ -10,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (toggle && nav && bodypd && headerpd) {
             toggle.addEventListener('click', () => {
                 // show navbar
-                nav.classList.toggle('show')
+                nav.classList.toggle('show-l-navbar')
                 // change icon
                 toggle.classList.toggle('bx-x')
                 // add padding to body

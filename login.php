@@ -1,9 +1,3 @@
-<?php
-session_start();
-if (!empty($_SESSION['email'])) {
-    header('location: /project/project-system/bills.php');
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,9 +16,9 @@ if (!empty($_SESSION['email'])) {
     <div class="login-form">
         <form action="./functions/login.php" method="post" class="needs-validation" novalidate>
             <?php if (isset($_GET['err'])) { ?>
-                <div id='err_feedback' class="alert alert-warning" role="alert">
-                    Incorrect email and password!
-                </div>
+            <div id='err_feedback' class="alert alert-warning" role="alert">
+                Incorrect email and password!
+            </div>
             <?php } ?>
             <h2>Login</h2>
             <p>Please fill in this form to proceed!</p>
@@ -44,9 +38,9 @@ if (!empty($_SESSION['email'])) {
                         </span>
                     </div>
                     <div class="form-floating">
-                        <input type="username" class="form-control" id="user-email" name="username"
+                        <input type="email" class="form-control" id="user-email" value="@csucc.edu.ph" name="email"
                             placeholder="name@example.com" required="">
-                        <label for="user-email">Username</label>
+                        <label for="user-email">Email</label>
                     </div>
                 </div>
                 <span id="fdbck-err-email" style="color: #dc3545"></span>

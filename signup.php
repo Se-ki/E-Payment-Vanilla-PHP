@@ -1,9 +1,3 @@
-<?php
-session_start();
-if (!empty($_SESSION['email'])) {
-    header('location: /project/project-system/home.php');
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,8 +87,8 @@ if (!empty($_SESSION['email'])) {
 
             <div class="form-group">
                 <!-- <div class="form-floating"> -->
-                <select class="form-select" name="" id="floatingSelect" aria-describedby="validationServer04Feedback"
-                    style="color: black;" required="">
+                <select class="form-select" name="course" id="floatingSelect"
+                    aria-describedby="validationServer04Feedback" style="color: black;" required="">
                     <option selected disabled value="">Program / Course</option>
                     <option value="Bachelor of Science in Information Technology" id="opt_bsit">Bachelor of Science in
                         Information
@@ -126,7 +120,7 @@ if (!empty($_SESSION['email'])) {
                     <option value="5th Year" id="opt_bseet">5th Year</option>
                 </select>
                 <div class="invalid-feedback">
-                    Please select your course.
+                    Please select your year level.
                 </div>
                 <!-- <label for="floatingSelect">Program/Course</label> -->
                 <!-- </div> -->

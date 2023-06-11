@@ -1,11 +1,11 @@
 # ---------------------------------------------------------------------- #
-# Script generated with: DeZign for Databases 13.0.3                     #
+# Script generated with: DeZign for Databases 13.0.4                     #
 # Target DBMS:           MySQL 8                                         #
-# Project file:          CEIT online payment                             #
-# Project name:                                                          #
+# Project file:          ceitpaymentonlinedez.dez                        #
+# Project name:          ceitpaymentonlinedez                            #
 # Author:                                                                #
 # Script type:           Database creation script                        #
-# Created on:            2023-05-25 23:49                                #
+# Created on:            2023-06-10 12:47                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -14,154 +14,135 @@
 # ---------------------------------------------------------------------- #
 
 # ---------------------------------------------------------------------- #
-# Add table "PROGRAM"                                                    #
+# Add table "student_signup"                                             #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `PROGRAM` (
-    `prog_code` INTEGER NOT NULL AUTO_INCREMENT,
-    `prog_name` VARCHAR(40),
-    CONSTRAINT `PK_PROGRAM` PRIMARY KEY (`prog_code`)
+CREATE TABLE `student_signup` (
+    `student_id` INTEGER(15) NOT NULL AUTO_INCREMENT,
+    `student_fname` VARCHAR(100) NOT NULL,
+    `student_lname` VARCHAR(100) NOT NULL,
+    `student_schoolid` VARCHAR(100) NOT NULL,
+    `student_program` VARCHAR(100) NOT NULL,
+    `student_yearlevel` VARCHAR(100) NOT NULL,
+    `student_gender` VARCHAR(100) NOT NULL,
+    `student_address` VARCHAR(250) NOT NULL,
+    `student_email` VARCHAR(100) NOT NULL,
+    `student_password` VARCHAR(250) NOT NULL,
+    `student_created` DATETIME NOT NULL,
+    `student_mobilenumber` VARCHAR(100),
+    CONSTRAINT `PK_student_signup` PRIMARY KEY (`student_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "ADMINISTRATOR"                                              #
+# Add table "student_login"                                              #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `ADMINISTRATOR` (
-    `admin_ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `admin_fname` VARCHAR(40),
-    `admin_lname` VARCHAR(40),
-    `admin_address` VARCHAR(40),
-    `admin_contactNo` VARCHAR(40),
-    `prog_code` INTEGER,
-    CONSTRAINT `PK_ADMINISTRATOR` PRIMARY KEY (`admin_ID`)
+CREATE TABLE `student_login` (
+    `login_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `login_date` DATETIME,
+    `student_id` INTEGER(15) NOT NULL,
+    CONSTRAINT `PK_student_login` PRIMARY KEY (`login_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "YEAR LEVEL"                                                 #
+# Add table "admin"                                                      #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `YEAR LEVEL` (
-    `lvl_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `lvl_lvlname` VARCHAR(40),
-    CONSTRAINT `PK_YEAR LEVEL` PRIMARY KEY (`lvl_id`)
+CREATE TABLE `admin` (
+    `admin_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `admin_name` VARCHAR(40),
+    `admin_email` VARCHAR(40),
+    `admin_pass` VARCHAR(40),
+    CONSTRAINT `PK_admin` PRIMARY KEY (`admin_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "PAYMENT METHOD"                                             #
+# Add table "admin_login"                                                #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `PAYMENT METHOD` (
-    `pay_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `pay_name` VARCHAR(40),
-    CONSTRAINT `PK_PAYMENT METHOD` PRIMARY KEY (`pay_id`)
+CREATE TABLE `admin_login` (
+    `login_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `login_date` DATETIME,
+    `admin_id` INTEGER NOT NULL,
+    CONSTRAINT `PK_admin_login` PRIMARY KEY (`login_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "BILL"                                                       #
+# Add table "student_logout"                                             #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `BILL` (
-    `bill_code` INTEGER NOT NULL AUTO_INCREMENT,
-    `bill_type` VARCHAR(40),
-    `bill_name` VARCHAR(40),
-    `admin_ID` INTEGER,
-    CONSTRAINT `PK_BILL` PRIMARY KEY (`bill_code`)
+CREATE TABLE `student_logout` (
+    `logout_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `logout_date` DATETIME,
+    `student_id` INTEGER(15) NOT NULL,
+    CONSTRAINT `PK_student_logout` PRIMARY KEY (`logout_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "STUD_USERNAME & PASSWORD"                                   #
+# Add table "admin_logout"                                               #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `STUD_USERNAME & PASSWORD` (
-    `user_email` VARCHAR(40) NOT NULL,
-    `users_pass` VARCHAR(40),
-    CONSTRAINT `PK_STUD_USERNAME & PASSWORD` PRIMARY KEY (`user_email`)
+CREATE TABLE `admin_logout` (
+    `logout_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `logout_date` DATETIME,
+    `admin_id` INTEGER NOT NULL,
+    CONSTRAINT `PK_admin_logout` PRIMARY KEY (`logout_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "PAYMENT ADMIN"                                              #
+# Add table "bills"                                                      #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `PAYMENT ADMIN` (
-    `payID_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `pay_id` INTEGER,
-    `admin_ID` INTEGER,
-    CONSTRAINT `PK_PAYMENT ADMIN` PRIMARY KEY (`payID_id`)
+CREATE TABLE `bills` (
+    `bill_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `bill_description` VARCHAR(100),
+    `bill_amount` INTEGER,
+    `bill_publish` DATETIME,
+    `bill_deadline` DATETIME,
+    `admin_id` INTEGER NOT NULL,
+    `student_id` INTEGER(15) NOT NULL,
+    CONSTRAINT `PK_bills` PRIMARY KEY (`bill_id`, `student_id`)
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "STUDENT SIGN-UP"                                            #
+# Add table "transactions"                                               #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `STUDENT SIGN-UP` (
-    `stud_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `stud_fname` VARCHAR(40),
-    `stud_lname` VARCHAR(40),
-    `stud_contactNo` VARCHAR(40),
-    `stud_gender` VARCHAR(40),
-    `stud_address` VARCHAR(40),
-    `prog_code` INTEGER,
-    `lvl_id` INTEGER,
-    `user_email` VARCHAR(40),
-    CONSTRAINT `PK_STUDENT SIGN-UP` PRIMARY KEY (`stud_id`)
+
+
+CREATE TABLE `transactions` (
+    `transaction_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `transaction_datepaid` DATETIME,
+    `transaction_referenceno` VARCHAR(100),
+    `transaction_paymentmethod` VARCHAR(100),
+    `bill_id` INTEGER NOT NULL,
+    `student_id` INTEGER(15) NOT NULL,
+    CONSTRAINT `PK_transactions` PRIMARY KEY (`transaction_id`, `bill_id`, `student_id`)
 );
 
-# ---------------------------------------------------------------------- #
-# Add table "STUDENT SIGN-UP_BILL"                                       #
-# ---------------------------------------------------------------------- #
 
-CREATE TABLE `STUDENT SIGN-UP_BILL` (
-    `stud_id` INTEGER NOT NULL,
-    `bill_code` INTEGER NOT NULL,
-    `pay_id` INTEGER,
-    CONSTRAINT `PK_STUDENT SIGN-UP_BILL` PRIMARY KEY (`stud_id`, `bill_code`)
-);
-
-# ---------------------------------------------------------------------- #
-# Add table "PAID LIST"                                                  #
-# ---------------------------------------------------------------------- #
-
-CREATE TABLE `PAID LIST` (
-    `list_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `stud_id` INTEGER,
-    `bill_code` INTEGER,
-    PRIMARY KEY (`list_id`)
-);
 
 # ---------------------------------------------------------------------- #
 # Add foreign key constraints                                            #
 # ---------------------------------------------------------------------- #
 
-ALTER TABLE `STUDENT SIGN-UP` ADD CONSTRAINT `PROGRAM_STUDENT SIGN-UP` 
-    FOREIGN KEY (`prog_code`) REFERENCES `PROGRAM` (`prog_code`);
+ALTER TABLE `bills` ADD CONSTRAINT `admin_bills` 
+    FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
 
-ALTER TABLE `STUDENT SIGN-UP` ADD CONSTRAINT `YEAR LEVEL_STUDENT SIGN-UP` 
-    FOREIGN KEY (`lvl_id`) REFERENCES `YEAR LEVEL` (`lvl_id`);
+ALTER TABLE `bills` ADD CONSTRAINT `student_signup_bills` 
+    FOREIGN KEY (`student_id`) REFERENCES `student_signup` (`student_id`);
 
-ALTER TABLE `STUDENT SIGN-UP` ADD CONSTRAINT `STUD_USERNAME & PASSWORD_STUDENT SIGN-UP` 
-    FOREIGN KEY (`user_email`) REFERENCES `STUD_USERNAME & PASSWORD` (`user_email`);
+ALTER TABLE `student_login` ADD CONSTRAINT `student_signup_student_login` 
+    FOREIGN KEY (`student_id`) REFERENCES `student_signup` (`student_id`);
 
-ALTER TABLE `ADMINISTRATOR` ADD CONSTRAINT `PROGRAM_ADMINISTRATOR` 
-    FOREIGN KEY (`prog_code`) REFERENCES `PROGRAM` (`prog_code`);
+ALTER TABLE `transactions` ADD CONSTRAINT `bills_transactions` 
+    FOREIGN KEY (`bill_id`, `student_id`) REFERENCES `bills` (`bill_id`,`student_id`);
 
-ALTER TABLE `BILL` ADD CONSTRAINT `ADMINISTRATOR_BILL` 
-    FOREIGN KEY (`admin_ID`) REFERENCES `ADMINISTRATOR` (`admin_ID`);
+ALTER TABLE `admin_login` ADD CONSTRAINT `admin_admin_login` 
+    FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
 
-ALTER TABLE `PAYMENT ADMIN` ADD CONSTRAINT `PAYMENT METHOD_PAYMENT ADMIN` 
-    FOREIGN KEY (`pay_id`) REFERENCES `PAYMENT METHOD` (`pay_id`);
+ALTER TABLE `student_logout` ADD CONSTRAINT `student_signup_student_logout` 
+    FOREIGN KEY (`student_id`) REFERENCES `student_signup` (`student_id`);
 
-ALTER TABLE `PAYMENT ADMIN` ADD CONSTRAINT `ADMINISTRATOR_PAYMENT ADMIN` 
-    FOREIGN KEY (`admin_ID`) REFERENCES `ADMINISTRATOR` (`admin_ID`);
-
-ALTER TABLE `PAID LIST` ADD CONSTRAINT `STUDENT SIGN-UP_BILL_PAID LIST` 
-    FOREIGN KEY (`stud_id`, `bill_code`) REFERENCES `STUDENT SIGN-UP_BILL` (`stud_id`,`bill_code`);
-
-ALTER TABLE `STUDENT SIGN-UP_BILL` ADD CONSTRAINT `STUDENT SIGN-UP_STUDENT SIGN-UP_BILL` 
-    FOREIGN KEY (`stud_id`) REFERENCES `STUDENT SIGN-UP` (`stud_id`);
-
-ALTER TABLE `STUDENT SIGN-UP_BILL` ADD CONSTRAINT `BILL_STUDENT SIGN-UP_BILL` 
-    FOREIGN KEY (`bill_code`) REFERENCES `BILL` (`bill_code`);
-
-ALTER TABLE `STUDENT SIGN-UP_BILL` ADD CONSTRAINT `PAYMENT METHOD_STUDENT SIGN-UP_BILL` 
-    FOREIGN KEY (`pay_id`) REFERENCES `PAYMENT METHOD` (`pay_id`);
+ALTER TABLE `admin_logout` ADD CONSTRAINT `admin_admin_logout` 
+    FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);

@@ -1,37 +1,43 @@
 <?php
 session_start();
 require "./database.php";
-function Login($result, $username, $password)
+function Login($result, $email, $password)
 {
     $rows = mysqli_fetch_assoc($result);
-    if ($username != $rows['username'] || $password != $rows['password']) {
+    if ($email != $rows['student_email'] || $password != $rows['student_password']) {
         header("location: /project/project-system/login.php?err=ksnvisne982323kf");
     } else {
-        $_SESSION['school_id'] = $rows['school_id'];
-        $_SESSION['email'] = $rows['email'];
-        $_SESSION['password'] = $rows['password'];
-        $_SESSION['username'] = $rows['username'];
-        $_SESSION['firstname'] = $rows['firstname'];
-        $_SESSION['lastname'] = $rows['lastname'];
-        $_SESSION['address'] = $rows['address'];
-        $_SESSION['mobilenumber'] = $rows['mobilenumber'];
-        $_SESSION['yearlevel'] = $rows['yearlevel'];
-        $_SESSION['program'] = $rows['program'];
+        $_SESSION['student_id'] = $rows['student_id'];
+        $_SESSION['firstname'] = $rows['student_fname'];
+        $_SESSION['lastname'] = $rows['student_lname'];
+        $_SESSION['school_id'] = $rows['student_schoolid'];
+        $_SESSION['program'] = $rows['student_program'];
+        $_SESSION['yearlevel'] = $rows['student_yearlevel'];
+        $_SESSION['mobilenumber'] = $rows['student_mobilenumber'];
+        $_SESSION['address'] = $rows['student_address'];
+        $_SESSION['email'] = $rows['student_email'];
+        $_SESSION['password'] = $rows['student_password'];
+        date_default_timezone_set('Asia/Manila');
+        $t = date('Y-m-d H:i:s');
+        $connection = connect();
+        $id = $rows['student_id'];
+        $sql = "INSERT INTO student_login VALUES(0, '$t', $id)";
+        mysqli_query($connection, $sql);
         header("location: /project/project-system/bills.php");
     }
 }
 try {
     if (isset($_POST['submit'])) {
-        $username = $_POST['username'];
+        $email = $_POST['email'];
         $password = $_POST['password'];
         $connection = connect();
-        $stmt = $connection->prepare("SELECT * FROM user_info WHERE username=? OR password=?");
-        $stmt->bind_param('ss', $username, $password);
+        $stmt = $connection->prepare("SELECT * FROM student_signup WHERE student_email=?");
+        $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        Login($result, $username, $password);
+        Login($result, $email, $password);
     }
 } catch (\Throwable $th) {
-    echo '<script> alert($th)</script>';
+    echo '<script>alert($th)</script>';
 }
 ?>

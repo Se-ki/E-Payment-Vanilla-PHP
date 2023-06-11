@@ -4,7 +4,10 @@ session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
+$num = 0;
 $connection = connect();
+$sql = "SELECT DISTINCT bill_description, bill_amount, bill_publish, bill_deadline FROM bills ORDER BY bill_publish";
+$query = mysqli_query($connection, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,15 +16,9 @@ $connection = connect();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"> -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <!-- main.php resources -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Admin |
-        <?php echo $_SESSION['admin_name'] ?>
-    </title>
+    <title>Admin | Bills</title>
     <!-- <link rel="stylesheet" href="./css/main.css"> -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
@@ -206,159 +203,144 @@ $connection = connect();
             .body-pd {
                 padding-left: calc(var(--nav-width) + 188px)
             }
-
-            .icon-card {
-                font-size: 70px;
-            }
-        }
-
-        /*********** admin dashboard styling **********/
-        .card {
-            background-color: #AFA5D9;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 8px 5px 5px #3B3131;
         }
     </style>
 </head>
 
 <body id="body-pd">
-    <header class="header" id="header">
-        <div class="header_toggle">
-            <i class='bx bx-menu' id="header-toggle"></i>
-        </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div>
-                <a href="#" class="nav_logo">
-                    <img src="../img/ava3.png" width="25px" height=25px"></img><span class="nav_logo-name">ADMIN
-                    </span>
-                    <!-- <img src="../img/logo.jpg" width="12%" height="80%" alt=""> -->
-                </a>
-                <div class="nav_list">
-                    <a href="./main.php" class="nav_link active">
+    <div>
+        <header class="header" id="header">
+            <div class="header_toggle">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Bill
+            </button>
+        </header>
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav_logo">
+                        <img src="../img/ava3.png" width="25px" height=25px"></img><span class="nav_logo-name">ADMIN
+                        </span>
+                        <!-- <img src="../img/logo.jpg" width="12%" height="80%" alt=""> -->
+                    </a>
+                    <a href="./main.php" class="nav_link">
                         <i class='bx bx-grid-alt nav_icon'></i>
                         <span class="nav_name">Main</span>
                     </a>
-                    <a href="./bills.php" class="nav_link">
-                        <i class='bx bx-list-plus nav_icon'></i>
-                        <span class="nav_name">Bills</span>
-                    </a>
-                    <a href="./users.php" class="nav_link">
-                        <i class='bx bx-user nav_icon'></i>
-                        <span class="nav_name">Users</span>
-                    </a>
-                    <a href="./paid.php" class="nav_link">
-                        <i class='bx bxs-user-check nav_icon'></i>
-                        <span class="nav_name">Paid</span>
-                    </a>
-                    <a href="./logs.php" class="nav_link">
-                        <i class='bx bx-group nav_icon'></i>
-                        <span class="nav_name">Logs</span>
-                    </a>
-                </div>
-            </div>
-            <a href="./admin_function/logout.php" class="nav_link">
-                <i class='bx bx-log-out nav_icon'></i>
-                <span class="nav_name">Logout</span>
-            </a>
-        </nav>
-    </div>
-    <!--Container Main start-->
-    <div class="height-100 bg-light">
-        <h4>Main</h4>
-        <div id="main-content" class="container allContent-section py-4">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="card">
-                        <i class="icon-card fa fa-users  mb-2"></i>
-                        <h4 style="color:white;">Total Users</h4>
-                        <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT * from student_signup";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + 1;
-                                }
-                            }
-                            echo $count;
-                            ?>
-                        </h5>
+                    <div class="nav_list">
+                        <a href="./bills.php" class="nav_link active">
+                            <i class='bx bx-list-plus nav_icon'></i>
+                            <span class="nav_name">Bills</span>
+                        </a>
+                        <a href="./users.php" class="nav_link">
+                            <i class='bx bx-user nav_icon'></i>
+                            <span class="nav_name">Users</span>
+                        </a>
+                        <a href="./paid.php" class="nav_link">
+                            <i class='bx bxs-user-check nav_icon'></i>
+                            <span class="nav_name">Paid</span>
+                        </a>
+                        <a href="./logs.php" class="nav_link">
+                            <i class='bx bx-group nav_icon'></i>
+                            <span class="nav_name">Logs</span>
+                        </a>
                     </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <i class='icon-card bx bxs-wallet mb-2'></i>
-                        <h4 style="color:white;">Total Amount</h4>
-                        <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT bills.bill_amount from `transactions` JOIN bills ON transactions.bill_id = bills.bill_id";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + $row['bill_amount'];
-                                }
-                            }
-                            echo $count;
-                            ?>
-                        </h5>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <i class="icon-card fa fa-list mb-2"></i>
-                        <h4 style="color:white;">Total Bills</h4>
-                        <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT DISTINCT bill_description from `bills`";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + 1;
-                                }
-                            }
-                            echo $count;
-                            ?>
-                        </h5>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <i class='icon-card bx bx-money-withdraw mb-2'></i>
-                        <h4 style="color:white;">Total User Paid</h4>
-                        <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT * from transactions";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + 1;
-                                }
-                            }
-                            echo $count;
-                            ?>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-
+                </div> <a href="./admin_function/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i>
+                    <span class="nav_name">Logout</span> </a>
+            </nav>
         </div>
-
+        <!--Container Main start-->
+        <div class="height-100 bg-light">
+            <h4>Bills</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Publish</th>
+                            <th scope="col">Deadline</th>
+                            <!-- <th scope="col">Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($query)) { ?>
+                        <tr>
+                            <td>
+                                    <?php echo $num = $num + 1; ?>
+                            </td>
+                            <td>
+                                    <?php echo $row['bill_description'] ?>
+                            </td>
+                            <td>
+                                    <?php echo $row['bill_amount'] ?>
+                            </td>
+                            <td>
+                                    <?php echo $row['bill_publish'] ?>
+                            </td>
+                            <td>
+                                    <?php echo $row['bill_deadline'] ?>
+                            </td>
+                            <td>
+                                <a
+                                    href="./admin_function/delete.php?desc=<?php echo $row['bill_description'] ?>">Delete</a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Billing Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="./admin_function/bills.php" method="post">
+                        <!-- <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <label for="floatingInput">Bill Type</label>
+                        </div> -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="bill-description" class="form-control" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Bill Description</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" name=bill-amount class="form-control" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Bill Amount</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="hidden" name="bill-publish" value="<?php date_default_timezone_set('Asia/Manila');
+                            $t = date('Y-m-d H:i:s');
+                            echo $t ?>" class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Bill Date</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="date" name="bill-deadline" class="form-control" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Bill Deadline</label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" name="save" class="btn btn-primary" value="Save">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!--Container Main end-->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <script src="../js/bootstrapV5.3.0/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {
