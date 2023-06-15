@@ -4,10 +4,26 @@ session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
+// fetched data
 $num = 0;
+$sort = 'DESC';
+$column = 'bill_publish';
+if (isset($_GET['column']) && isset($_GET['sort'])) {
+    $sort = $_GET['sort'];
+    $column = $_GET['column'];
+    if ($sort == 'ASC') {
+        $sort = 'DESC';
+    } else {
+        $sort = 'ASC';
+    }
+}
+$sql = "SELECT DISTINCT bill_description, bill_amount, bill_publish, bill_deadline FROM bills ORDER BY $column $sort";
 $connection = connect();
-$sql = "SELECT DISTINCT bill_description, bill_amount, bill_publish, bill_deadline FROM bills ORDER BY bill_publish";
 $query = mysqli_query($connection, $sql);
+function viewBills($query)
+{
+    return $query->fetch_assoc();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +35,7 @@ $query = mysqli_query($connection, $sql);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <title>Admin | Bills</title>
-    <!-- <link rel="stylesheet" href="./css/main.css"> -->
+    <!-- <link rel="stylesheet" href="./css/bills.css"> -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
@@ -204,6 +220,15 @@ $query = mysqli_query($connection, $sql);
                 padding-left: calc(var(--nav-width) + 188px)
             }
         }
+
+        .table-header {
+            color: black;
+            font-weight: bolder;
+        }
+
+        .letter-capz {
+            text-transform: capitalize;
+        }
     </style>
 </head>
 
@@ -248,7 +273,8 @@ $query = mysqli_query($connection, $sql);
                             <span class="nav_name">Logs</span>
                         </a>
                     </div>
-                </div> <a href="./admin_function/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i>
+                </div> <a href="./admin_function/logout.php?id=<?php echo $_SESSION['admin_id'] ?>" class="nav_link"> <i
+                        class='bx bx-log-out nav_icon'></i>
                     <span class="nav_name">Logout</span> </a>
             </nav>
         </div>
@@ -259,35 +285,49 @@ $query = mysqli_query($connection, $sql);
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Publish</th>
-                            <th scope="col">Deadline</th>
-                            <!-- <th scope="col">Action</th> -->
+                            <th scope="col"><a class="table-header"
+                                    href="?column=bill_id&sort=<?php echo $sort ?>">#</a></th>
+                            <th scope="col"><a class="table-header"
+                                    href="?column=bill_description&sort=<?php echo $sort ?>">Description</a>
+                            </th>
+                            <th scope="col"><a class="table-header"
+                                    href="?column=bill_amount&sort=<?php echo $sort ?>">Amount</a></th>
+                            <th scope="col"><a class="table-header"
+                                    href="?column=bill_publish&sort=<?php echo $sort ?>">Publish</a></th>
+                            <th scope="col"><a class="table-header"
+                                    href="?column=bill_deadline&sort=<?php echo $sort ?>">Deadline</a></th>
+                            <th scope="col" class="table-header">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($query)) { ?>
-                        <tr>
-                            <td>
+                            <tr>
+                                <td>
                                     <?php echo $num = $num + 1; ?>
-                            </td>
-                            <td>
+                                </td>
+                                <td class="letter-capz">
                                     <?php echo $row['bill_description'] ?>
-                            </td>
-                            <td>
-                                    <?php echo $row['bill_amount'] ?>
-                            </td>
-                            <td>
-                                    <?php echo $row['bill_publish'] ?>
-                            </td>
-                            <td>
-                                    <?php echo $row['bill_deadline'] ?>
-                            </td>
-                            <td>
-                                <a
-                                    href="./admin_function/delete.php?desc=<?php echo $row['bill_description'] ?>">Delete</a>
+                                </td>
+                                <td>
+                                    <?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    date_default_timezone_set('Asia/Manila');
+                                    $format = date_create($row['bill_publish']);
+                                    echo $datepublish = date_format($format, "F d, Y h:i:s a");
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    date_default_timezone_set('Asia/Manila');
+                                    $format = date_create($row['bill_deadline']);
+                                    echo $deadline = date_format($format, "F d, Y");
+                                    ?>
+                                </td>
+                                <td>
+                                    <a
+                                        href="./admin_function/delete_bill.php?desc=<?php echo $row['bill_description'] ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -305,7 +345,7 @@ $query = mysqli_query($connection, $sql);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="./admin_function/bills.php" method="post">
+                    <form action="./admin_function/add_bill.php" method="post">
                         <!-- <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
                             <label for="floatingInput">Bill Type</label>

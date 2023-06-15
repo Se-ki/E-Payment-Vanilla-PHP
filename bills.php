@@ -210,30 +210,34 @@ date_default_timezone_set('Asia/Manila');
         .nav-item {
             list-style-type: none;
             cursor: pointer;
+            text-transform: capitalize;
         }
 
         th,
         td {
             text-align: center;
         }
+
+        .description-capitalization {
+            text-transform: capitalize;
+        }
     </style>
 </head>
-<?php if (isset($_GET['ref'])) { ?>
-    <script>alert("The reference number that you've entered was already used.")</script>
-<?php } ?>
 
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
-        <li class="nav-item dropdown" style="list-style-type:none; cursor: pointer;">
+        <span class=""><img src="./img/logo-no-bg.png" width="120px" height="50px" alt="" srcset=""></span>
+        <li class="nav-item dropdown">
             <a class="dropdown-toggle" data-bs-toggle="dropdown">
                 <?php echo $_SESSION['firstname'] ?>
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
-                <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
+                <li><a class="dropdown-item"
+                        href="./functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>">Logout</a></li>
             </ul>
         </li>
     </header>
@@ -241,7 +245,7 @@ date_default_timezone_set('Asia/Manila');
         <nav class="nav">
             <div>
                 <a href="#" class="nav_logo">
-                    <img src="./img/icon.jpg" width="25px" height="25px" alt="">
+                    <img src="./img/icon-no-bg.png" width="25px" height="25px" alt="">
                     <span class="nav_logo-name" style="font:bolder">CEIT E-PAYMENT
                     </span>
                 </a>
@@ -254,9 +258,13 @@ date_default_timezone_set('Asia/Manila');
                         <i class='bx bx-list-ol nav_icon'></i>
                         <span class="nav_name">Transaction</span>
                     </a>
+                    <a href="./myinfo.php" class="nav_link">
+                        <i class='bx bxs-user-badge nav_icon'></i>
+                        <span class="nav_name">My Info</span>
+                    </a>
                 </div>
-            </div> <a href="./functions/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span
-                    class="nav_name">Logout</span> </a>
+            </div> <a href="./functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>" class="nav_link"> <i
+                    class='bx bx-log-out nav_icon'></i> <span class="nav_name">Logout</span> </a>
         </nav>
     </div>
     <!--Container Main start-->
@@ -278,23 +286,23 @@ date_default_timezone_set('Asia/Manila');
                 </thead>
                 <tbody>
                     <?php while ($row = view($result)) { ?>
-                    <tr>
-                        <td>
+                        <tr>
+                            <td>
                                 <?php echo $i += 1 ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td class="description-capitalization">
                                 <?php echo $row['bill_description'] ?>
-                        </td>
-                        <td>
-                                <?php echo $row['bill_amount'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
+                                <?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>
+                            </td>
+                            <td>
                                 <?php
                                 $date = date_create($row['bill_publish']);
                                 echo date_format($date, "F d, Y h:i:s A");
                                 ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php
                                 $date = date_create($row['bill_deadline']);
                                 $deadline = date_format($date, "F d, Y");
@@ -308,13 +316,13 @@ date_default_timezone_set('Asia/Manila');
                                     echo $deadline;
                                 }
                                 ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['admin_name'] ?>
-                        </td>
-                        <td>
-                            <a href="#pay" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
-                                id="custId" data-id="<?php echo $row['bill_id'] ?>">
+                            </td>
+                            <td>
+                                <a href="#pay" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pay"
+                                    id="custId" data-id="<?php echo $row['bill_id'] ?>">
                                     Pay
                                 </a>
                             </td>
@@ -362,7 +370,6 @@ date_default_timezone_set('Asia/Manila');
                 });
             });
         });
-
         // side bar code
         document.addEventListener("DOMContentLoaded", function (event) {
 

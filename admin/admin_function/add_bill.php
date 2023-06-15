@@ -1,10 +1,11 @@
 <?php
 session_start();
 require "../../functions/database.php";
+// if button toggle in bill.php this function will work
 function description($connection, $description)
 {
-    $sql = "SELECT * FROM bills WHERE bill_description = '$description'";
-    $query = mysqli_query($connection, $sql);
+    $_sql = "SELECT * FROM bills WHERE bill_description = '$description'";
+    $query = mysqli_query($connection, $_sql);
     if (mysqli_num_rows($query)) {
         echo '<script>alert("Bill already exist!")</script>';
         header('location: /project/project-system/admin/bills.php?q=true');
@@ -20,14 +21,17 @@ if (isset($_POST['save'])) {
     $id = $_SESSION['admin_id'];
     $connection = connect();
 
-    $sql = "SELECT * FROM student_signup";
-    $student_q = mysqli_query($connection, $sql);
+    $sql_stud = "SELECT * FROM student_signup";
+    $student_q = mysqli_query($connection, $sql_stud);
     while ($row_stdnt = $student_q->fetch_assoc()) {
         $student_id = $row_stdnt['student_id'];
-        $sql = "INSERT INTO `bills`(`bill_description`, `bill_amount`, `bill_publish`, `bill_deadline`, `status`, `admin_id`, `student_id`) VALUES ('$description', $amount, '$date', '$deadline', 0, $id, $student_id)";
-        mysqli_query($connection, $sql);
+        $sql_bill = "INSERT INTO `bills`(`bill_description`, `bill_amount`, `bill_publish`, `bill_deadline`, `status`, `admin_id`, `student_id`) VALUES ('$description', $amount, '$date', '$deadline', 0, $id, $student_id)";
+        mysqli_query($connection, $sql_bill);
     }
+    header('location: /project/project-system/admin/bills.php');
 }
-header('location: /project/project-system/admin/bills.php');
+
+
+
 
 ?>

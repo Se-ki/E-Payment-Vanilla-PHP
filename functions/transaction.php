@@ -12,7 +12,7 @@ if (!empty($_POST['rowid'])) {
   $query = mysqli_query($connection, $sql);
   $details = mysqli_fetch_assoc($query);
   $format = date_create($details["transaction_datepaid"]);
-  $datepaid = date_format($format, "F d, Y h:i:s a");
+  $datepaid = date_format($format, "F d, Y h:i:s");
 }
 ?>
 <style>
@@ -57,8 +57,8 @@ if (!empty($_POST['rowid'])) {
 <div class="row my-4">
   <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
     <p class="small text-muted mb-1">Paid</p>
-    <p class="lead fw-bold mb-0" style="color: #f37a27;">₱
-      <?php echo $details["bill_amount"] ?>
+    <p class="lead fw-bold mb-0" style="color: #f37a27;">
+      <?php echo '₱ ' . number_format($details['bill_amount'], 2) ?>
     </p>
   </div>
 </div>

@@ -182,7 +182,7 @@ password.addEventListener("input", (event) => {
         isPasswordEqual(event, password, confirmPassword);
     } else {
         password.style.borderColor = "#dc3545";
-        pwd_feedback.innerHTML = "Password must at least twelve characters."
+        pwd_feedback.innerHTML = "Password must at least eight characters."
     }
     if (confirmPassword.value) {
         isCnfrmPassEqual(password, confirmPassword);

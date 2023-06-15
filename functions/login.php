@@ -17,6 +17,7 @@ function Login($result, $email, $password)
         $_SESSION['address'] = $rows['student_address'];
         $_SESSION['email'] = $rows['student_email'];
         $_SESSION['password'] = $rows['student_password'];
+        $_SESSION['profile_picture'] = $rows['profile_picture'];
         date_default_timezone_set('Asia/Manila');
         $t = date('Y-m-d H:i:s');
         $connection = connect();

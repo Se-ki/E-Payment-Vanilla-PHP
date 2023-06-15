@@ -1,7 +1,18 @@
 <?php
 session_start();
+require "./functions/database.php";
 if (empty($_SESSION['email']) && $_SESSION['email']) {
     header('location: login.php');
+}
+$connection = connect();
+$id = $_SESSION['student_id'];
+$sql = "SELECT profile_picture FROM student_signup WHERE student_id=$id";
+$query = $connection->query($sql);
+$row = $query->fetch_assoc();
+if (isset($_POST['save'])) {
+    $pic = $_POST['picture'];
+    $sql_s = "UPDATE student_signup SET profile_picture='$pic' WHERE student_id=$id";
+    $connection->query($sql_s);
 }
 ?>
 <!DOCTYPE html>
@@ -35,9 +46,45 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
-                            <img src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
-                                style="width: 150px; padding-top: 11px;">
-                            <h4 class="my-2">
+                            <?php if (empty($row['profile_picture']) || $row['profile_picture'] == null) { ?>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <img src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
+                                    style="width: 150px; padding-top: 11px;">
+                            </a>
+                            <?php } else { ?>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <img src="img/<?php echo $row['profile_picture'] ?>" alt="avatar"
+                                        class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;"
+                                        accept=".jpg, .jpeg, .png">
+                                </a>
+                            <?php } ?>
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Profile</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post">
+                                                <input type="file" name="picture" id="">
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="save" id=""
+                                                class="btn btn-primary">Save</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="my-2" style="text-transform: capitalize;">
                                 <?php echo $_SESSION['firstname'] ?>
                             </h4>
                             <p class="text-muted mb-1">
@@ -70,7 +117,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                                 <div class="col-sm-3">
                                     <p class="mb-0">Full Name</p>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" style="text-transform: capitalize;">
                                     <p class="text-muted mb-0">
                                         <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname'] ?>
                                     </p>
@@ -125,7 +172,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                                 <div class="col-sm-3">
                                     <p class="mb-0">Address</p>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" style="text-transform: capitalize;">
                                     <p class="text-muted mb-0">
                                         <?php echo $_SESSION['address']; ?>
                                     </p>

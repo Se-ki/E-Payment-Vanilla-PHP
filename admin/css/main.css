@@ -147,6 +147,7 @@
             height: 100vh
         }
 
+
         @media screen and (min-width: 768px) {
             body {
                 margin: calc(var(--header-height) + 1rem) 0 0 0;
@@ -179,4 +180,17 @@
             .body-pd {
                 padding-left: calc(var(--nav-width) + 188px)
             }
+
+            .icon-card {
+                font-size: 70px;
+            }
+        }
+
+        /*********** admin dashboard styling **********/
+        .card {
+            background-color: #AFA5D9;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 8px 5px 5px #3B3131;
         }

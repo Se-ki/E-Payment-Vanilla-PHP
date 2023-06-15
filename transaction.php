@@ -532,13 +532,15 @@ function view($result)
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
+        <span class=""><img src="./img/logo-no-bg.png" width="120px" height="50px" alt="" srcset=""></span>
         <li class="nav-item dropdown" style="list-style-type:none; cursor: pointer;">
             <a class="dropdown-toggle" data-bs-toggle="dropdown">
                 <?php echo $_SESSION['firstname'] ?>
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
-                <li><a class="dropdown-item" href="./functions/logout.php">Logout</a></li>
+                <li><a class="dropdown-item"
+                        href="./functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>">Logout</a></li>
             </ul>
         </li>
     </header>
@@ -546,8 +548,7 @@ function view($result)
         <nav class="nav">
             <div>
                 <a href="#" class="nav_logo">
-                    <!-- <i class='bi bi-cash-stack nav_logo-icon'>C</i> -->
-                    <img src="./img/icon.jpg" width="25px" height="25px" alt="">
+                    <img src="./img/icon-no-bg.png" width="25px" height="25px" alt="">
                     <span class="nav_logo-name" style="font:bolder">CEIT E-PAYMENT
                     </span>
                 </a>
@@ -560,9 +561,13 @@ function view($result)
                         <i class='bx bx-list-ol nav_icon'></i>
                         <span class="nav_name">Transaction</span>
                     </a>
+                    <a href="./myinfo.php" class="nav_link">
+                        <i class='bx bxs-user-badge nav_icon'></i>
+                        <span class="nav_name">My Info</span>
+                    </a>
                 </div>
-            </div> <a href="./functions/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span
-                    class="nav_name">Logout</span> </a>
+            </div> <a href="./functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>" class="nav_link"> <i
+                    class='bx bx-log-out nav_icon'></i> <span class="nav_name">Logout</span> </a>
         </nav>
     </div>
     <!--Container Main start-->
@@ -600,26 +605,26 @@ function view($result)
                 </thead>
                 <tbody>
                     <?php while ($row = view($result)) { ?>
-                    <tr>
-                        <td scope="row"> <span class="fa fa-briefcase mr-1"></span>
+                        <tr>
+                            <td scope="row"> <span class="fa fa-briefcase mr-1"></span>
                                 <?php echo $row['bill_description'] ?>
-                        </td>
-                        <td><span class="">
+                            </td>
+                            <td><span class="">
                                     <?php echo $row['transaction_paymentmethod'] ?>
-                            </span></td>
-                        <td class="text-muted">
+                                </span></td>
+                            <td class="text-muted">
                                 <?php
                                 $date = date_create($row['transaction_datepaid']);
                                 echo date_format($date, "F d, Y h:i:s a");
                                 ?>
-                        </td>
-                        <td class="d-flex justify-content-end align-items-center"><span class="">₱</span>
-                                <?php echo $row['bill_amount'] ?>
-                        </td>
+                            </td>
+                            <td class="d-flex justify-content-end align-items-center"><span class="">
+                                    <?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>
+                            </td>
 
-                        <td>
-                            <a href="#myModal" data-bs-toggle="modal" data-bs-target="#myModal" id="custId"
-                                data-id="<?php echo $row['transaction_id'] ?>">
+                            <td>
+                                <a href="#myModal" data-bs-toggle="modal" data-bs-target="#myModal" id="custId"
+                                    data-id="<?php echo $row['transaction_id'] ?>">
                                     <i class='bx bx-dots-horizontal-rounded'></i>
                                 </a>
                             </td>
@@ -628,9 +633,9 @@ function view($result)
                 </tbody>
             </table>
             <?php if (!$result->num_rows) { ?>
-            <center>
-                <p class="text-muted pl-1">No transaction has been made.</p>
-            </center>
+                <center>
+                    <p class="text-muted pl-1">No transaction has been made.</p>
+                </center>
             <?php } ?>
         </div>
         <!-- Modal -->

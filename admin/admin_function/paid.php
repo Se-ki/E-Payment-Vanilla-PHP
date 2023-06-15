@@ -11,7 +11,6 @@ if (!empty($_POST['rowid'])) {
   JOIN bills ON transactions.bill_id = bills.bill_id WHERE transaction_id=$id";
     $query = mysqli_query($connection, $sql);
     $details = mysqli_fetch_assoc($query);
-
     // Date
     date_default_timezone_set('Asia/Manila');
     $format = date_create($details["transaction_datepaid"]);
@@ -32,8 +31,8 @@ if (!empty($_POST['rowid'])) {
         </p>
     </div>
     <div class="col mb-3">
-        <p class="small text-muted mb-1">Reference No.<button type="button" id="reference-button"><i
-                    class='bx bxs-copy'></i></button>
+        <p class="small text-muted mb-1">Reference No.<button type="button" onclick="myFunction()"
+                id="reference-button"><i class='bx bxs-copy'></i></button>
         </p>
         <p>
             <input type="hidden" id="myInput" value="<?php echo $details["transaction_referenceno"] ?>">
@@ -59,21 +58,26 @@ if (!empty($_POST['rowid'])) {
 
 <div class="row my-4">
     <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
-        <p class="small text-muted mb-1">Paid</p>
-        <p class="lead fw-bold mb-0" style="color: #f37a27;">₱
-            <?php echo $details["bill_amount"] ?>
+        <p class="small text-muted mb-1 ">Paid</p>
+        <p class="fw-bold" style="color: #f37a27;">
+            ₱
+            <?php echo number_format($details['bill_amount'], 2) ?>
         </p>
     </div>
 </div>
 <script>
-    document.getElementById('reference-button').addEventListener('click', () => {
-        var copyText = document.getElementById('myInput');
-        console.log('click');
-        // copyText.setSelectionRange(0, 99999); // For mobile devices
+    function myFunction() {
+        // Get the text field
+        var copyText = document.getElementById("myInput");
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
         // Copy the text inside the text field
         navigator.clipboard.writeText(copyText.value);
 
         // Alert the copied text
         alert("Copied the text: " + copyText.value);
-    });
+    }
 </script>

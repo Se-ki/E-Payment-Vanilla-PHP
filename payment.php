@@ -4,7 +4,6 @@ require "./functions/database.php";
 if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
     header("location: login.php");
 }
-
 $connection = connect();
 if (!empty($_POST['rowid'])) {
     $id = mysqli_escape_string($connection, $_POST['rowid']);
@@ -37,18 +36,19 @@ if (!empty($_POST['rowid'])) {
                 </div>
                 <div class="col">
                     <p class="small text-muted mb-1">Amount</p>
-                    <input type="text" name="amount" value="<?php echo $row['bill_amount'] ?>" class="form-control"
-                        id="">
+
+                    <input type="text" name="amount" value="<?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>"
+                        class="form-control" id="">
                 </div>
             </div>
             <div class="row">
                 <div class="col mt-3">
-                    <p class="small text-muted mb-1">Date Paid</p>
-                    <input type="text" name="datepaid" value="<?php
+                    <?php
                     date_default_timezone_set('Asia/Manila');
                     $t = date('F d, Y h:i:s A');
-                    echo $t;
-                    ?>" class="form-control" id="" disabled>
+                    ?>
+                    <p class="small text-muted mb-1">Date Paid</p>
+                    <input type="text" name="datepaid" value="<?php echo $t; ?>" class="form-control" id="" disabled>
                 </div>
                 <div class="col mt-3">
                     <p class="small text-muted mb-1">Reference No.</p>

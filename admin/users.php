@@ -6,9 +6,16 @@ if (empty($_SESSION['pin'])) {
 }
 $num = 0;
 $connection = connect();
-$sql = "SELECT * FROM student_signup ORDER BY student_lname";
+$sql = "SELECT * FROM student_signup ORDER BY student_created DESC";
 $query = mysqli_query($connection, $sql);
 ?>
+<!-- SET FOREIGN_KEY_CHECKS = 0;
+// if we delete the registered student it will also delete hes
+DELETE FROM student_signup WHERE student_id = 2;
+DELETE FROM student_login WHERE student_id = 2;
+DELETE FROM student_logout WHERE student_id = 2;
+
+SET FOREIGN_KEY_CHECKS = 1; -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -207,6 +214,11 @@ $query = mysqli_query($connection, $sql);
                 padding-left: calc(var(--nav-width) + 188px)
             }
         }
+
+        .table .table-header {
+            color: black;
+            font-weight: bolder;
+        }
     </style>
 </head>
 
@@ -246,8 +258,8 @@ $query = mysqli_query($connection, $sql);
                         <span class="nav_name">Logs</span>
                     </a>
                 </div>
-            </div> <a href="./admin_function/logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span
-                    class="nav_name">Logout</span> </a>
+            </div> <a href="./admin_function/logout.php?id=<?php echo $_SESSION['admin_id'] ?>" class="nav_link"> <i
+                    class='bx bx-log-out nav_icon'></i> <span class="nav_name">Logout</span> </a>
         </nav>
     </div>
     <!--Container Main start-->
@@ -257,52 +269,69 @@ $query = mysqli_query($connection, $sql);
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">School ID</th>
-                        <th scope="col">Fullname</th>
-                        <th scope="col">Sex</th>
-                        <th scope="col">Program</th>
-                        <th scope="col">Year Level</th>
-                        <th scope="col">Mobile Number</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Date Created</th>
+                        <th scope="col" class="table-header">#</th>
+                        <th scope="col" class="table-header">School ID</th>
+                        <th scope="col" class="table-header">Fullname</th>
+                        <th scope="col" class="table-header">Sex</th>
+                        <th scope="col" class="table-header">Program</th>
+                        <th scope="col" class="table-header">Year Level</th>
+                        <th scope="col" class="table-header">Mobile Number</th>
+                        <th scope="col" class="table-header">Address</th>
+                        <th scope="col" class="table-header">Email</th>
+                        <th scope="col" class="table-header">Date Created</th>
+                        <th scope="col" class="table-header">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = $query->fetch_assoc()) { ?>
-                    <tr>
-                        <td>
+                        <tr>
+                            <td>
                                 <?php echo $num = $num + 1 ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_schoolid'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_fname'] . " " . $row['student_lname'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_gender'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_program'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_yearlevel'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_mobilenumber'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_address'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_email'] ?>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                                 <?php echo $row['student_created'] ?>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">View</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">Logs</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="./admin_function/delete_user.php?id=<?php echo $row['student_id'] ?>">Delete</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     <?php } ?>
                 </tbody>
             </table>
