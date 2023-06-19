@@ -99,13 +99,13 @@ $connection = connect();
                         <h4 style="color:white;">Total Amount</h4>
                         <h5 style="color:white;">
                             <?php
-                            $sql = "SELECT bills.bill_amount from `transactions` JOIN bills ON transactions.bill_id = bills.bill_id";
+                            $sql = "SELECT * from `transactions`";
                             $result = $connection->query($sql);
                             $count = 0;
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
 
-                                    $count = $count + $row['bill_amount'];
+                                    $count = $count + $row['transaction_amount'];
                                 }
                             }
                             echo '₱ ' . number_format("$count", 2);

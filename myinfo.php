@@ -47,19 +47,19 @@ if (isset($_POST['save'])) {
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
                             <?php if (empty($row['profile_picture']) || $row['profile_picture'] == null) { ?>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                <img src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
-                                    style="width: 150px; padding-top: 11px;">
-                            </a>
+                                <a href="" data-bs-toggle="modal" data-bs-target="#changeprofile">
+                                    <img src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
+                                        style="width: 150px; padding-top: 11px;">
+                                </a>
                             <?php } else { ?>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                <img src="img/<?php echo $row['profile_picture'] ?>" alt="avatar"
+                                <a href="" data-bs-toggle="modal" data-bs-target="#changeprofile">
+                                    <img src="img/<?php echo $row['profile_picture'] ?>" alt="avatar"
                                         class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;"
                                         accept=".jpg, .jpeg, .png">
                                 </a>
                             <?php } ?>
                             <!-- Modal -->
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                            <div class="modal fade" id="changeprofile" data-bs-backdrop="static"
                                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                 aria-hidden="true">
                                 <div class="modal-dialog">

@@ -17,6 +17,7 @@ if (!empty($_POST['rowid'])) {
     <div class="card-body">
         <h4 style="margin-bottom: 2rem">Payment Method</h4>
         <form action="./functions/payment.php" method="post">
+            <input type="hidden" name="deadline" value="<?php echo $row['bill_deadline'] ?>">
             <input type="hidden" name="bill_id" value="<?php echo $row['bill_id'] ?>" />
             <div class="col-sm-20">
                 <div class="form-check">
@@ -36,9 +37,10 @@ if (!empty($_POST['rowid'])) {
                 </div>
                 <div class="col">
                     <p class="small text-muted mb-1">Amount</p>
-
-                    <input type="text" name="amount" value="<?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>"
+                    <input type="text" value="<?php echo "₱ " . number_format($row['bill_amount'], 2) ?>"
                         class="form-control" id="">
+                    <input type="hidden" name="amount" value="<?php echo $row['bill_amount'] ?>" class="form-control"
+                        id="">
                 </div>
             </div>
             <div class="row">

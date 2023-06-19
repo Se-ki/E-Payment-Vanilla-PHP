@@ -4,10 +4,11 @@ session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
-$num = 0;
 $connection = connect();
-$sql = "SELECT * FROM student_signup ORDER BY student_created DESC";
-$query = mysqli_query($connection, $sql);
+$id = $_GET['id'];
+$sql = "SELECT * FROM student_signup WHERE student_id = $id";
+$query = $connection->query($sql);
+$result = $query->fetch_assoc();
 ?>
 <!-- SET FOREIGN_KEY_CHECKS = 0;
 // if we delete the registered student it will also delete hes
@@ -23,16 +24,12 @@ SET FOREIGN_KEY_CHECKS = 1; -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- transaction resources -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Google Fonts -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"> -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <!-- <link rel="stylesheet" href="../css/bootstrapV5.3.0/bootstrap.min.css"> -->
-    <title>Admin | Users</title>
+    <link rel="stylesheet" href="../css/bootstrapV5.3.0/bootstrap.min.css">
+    <title>View Profile</title>
     <!-- <link rel="stylesheet" href="./css/main.css"> -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
@@ -223,10 +220,6 @@ SET FOREIGN_KEY_CHECKS = 1; -->
             color: black;
             font-weight: bolder;
         }
-
-        .row-name {
-            text-transform: capitalize;
-        }
     </style>
 </head>
 
@@ -271,110 +264,149 @@ SET FOREIGN_KEY_CHECKS = 1; -->
         </nav>
     </div>
     <!--Container Main start-->
-    <div class="height-100 bg-light">
-        <h4>Users</h4>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col" class="table-header">#</th>
-                        <th scope="col" class="table-header">School ID</th>
-                        <th scope="col" class="table-header">Fullname</th>
-                        <th scope="col" class="table-header">Email</th>
-                        <th scope="col" class="table-header">Sex</th>
-                        <th scope="col" class="table-header">Program</th>
-                        <th scope="col" class="table-header">Year Level</th>
-                        <th scope="col" class="table-header">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $query->fetch_assoc()) { ?>
-                        <tr>
-                            <td>
-                                <?php echo $num = $num + 1 ?>
-                            </td>
-                            <td>
-                                <?php echo $row['student_schoolid'] ?>
-                            </td>
-                            <td class="row-name">
-                                <?php echo $row['student_fname'] . " " . $row['student_lname'] ?>
-                            </td>
-                            <td>
-                                <?php echo $row['student_email'] ?>
-                            </td>
-                            <td>
-                                <?php echo $row['student_gender'] ?>
-                            </td>
-                            <td>
-                                <?php echo $row['student_program'] ?>
-                            </td>
-                            <td>
-                                <?php echo $row['student_yearlevel'] ?>
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item"
-                                                href="./view.php?id=<?php echo $row['student_id'] ?>">View</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="#pay" class="btn btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#addbill" id="custId"
-                                                data-id="<?php echo $row['student_id'] ?>">Add Bill</a></li>
-                                        <li><a class="dropdown-item"
-                                                href="./admin_function/delete_user.php?id=<?php echo $row['student_id'] ?>">Delete</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="addbill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title" id="staticBackdropLabel"></span>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&times;</button>
-                    </button>
-                </div>
+    <div class="bg-light">
+        <h4>View Profile</h4>
+        <section style="background-color: #eee;">
+            <div class="container py-2">
+                <div class="row">
+                    <div class="col">
+                        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="./users.php">Users</a></li>
 
-                <div class="modal-body">
-                    <!-- //Here Will show the Data -->
-                    <div class="fetched-data">
+                            </ol>
+                        </nav>
                     </div>
                 </div>
-            </div>
-        </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body text-center p-4">
+                                <?php if (empty($result['profile_picture'])) { ?>
+                                    <img src="../img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
+                                        style="width: 150px; padding-top: 11px;">
+                                <?php } else if (!empty($result['profile_picture'])) { ?>
+                                        <img src="../img/<?php echo $result['profile_picture'] ?>" alt="avatar"
+                                            class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;">
+                                <?php } ?>
+                                </a>
+                                <h4 class="my-2" style="text-transform: capitalize;">
+                                    <?php echo $result['student_fname'] ?>
+                                </h4>
+                                <p class="text-muted mb-1">
+                                    <?php echo $result['student_program'] ?>
+                                </p>
+                                <p class="text-muted mb-4">
+                                    <?php echo $result['student_yearlevel']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">School ID</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_schoolid']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Full Name</p>
+                                    </div>
+                                    <div class="col-sm-9" style="text-transform: capitalize;">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_fname'] . " " . $result['student_lname'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_email']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Course</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_program']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Year Level</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_yearlevel']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Mobile</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_mobilenumber'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Address</p>
+                                    </div>
+                                    <div class="col-sm-9" style="text-transform: capitalize;">
+                                        <p class="text-muted mb-0">
+                                            <?php echo $result['student_address']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Date Created</p>
+                                    </div>
+                                    <div class="col-sm-9" style="text-transform: capitalize;">
+                                        <p class="text-muted mb-0">
+                                            <?php
+                                            date_default_timezone_set('Asia/Manila');
+                                            $format = date_create($result['student_created']);
+                                            echo $datepaid = date_format($format, "F d, Y h:i:s a");
+                                            ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
     </div>
     <!--Container Main end-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        //modal
-        $(document).ready(function () {
-            $('#addbill').on('show.bs.modal', function (e) {
-                var rowid = $(e.relatedTarget).data('id');
-                $.ajax({
-                    type: 'post',
-                    url: 'add_user_bill.php', //Here you will fetch records 
-                    data: 'rowid=' + rowid, //Pass $id
-                    success: function (data) {
-                        $('.fetched-data').html(data);//Show fetched data from database
-                    }
-                });
-            });
-        });
-
-        //side bar
         document.addEventListener("DOMContentLoaded", function (event) {
 
             const showNavbar = (toggleId, navId, bodyId, headerId) => {

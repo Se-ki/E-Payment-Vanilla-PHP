@@ -17,7 +17,19 @@ if (isset($_GET['column']) && isset($_GET['sort'])) {
         $sort = 'ASC';
     }
 }
-$sql = "SELECT DISTINCT bill_description, bill_amount, bill_publish, bill_deadline FROM bills ORDER BY $column $sort";
+// $sql = "SELECT DISTINCT bill_description, bill_amount, bill_publish, bill_deadline FROM bills ORDER BY $column $sort";
+$sql = "SELECT *
+FROM (SELECT `bill_id`, 
+            `bill_description`, 
+            `bill_amount`, 
+            `bill_publish`,
+            `bill_deadline`,
+            `status`,
+            `admin_id`, 
+            `student_id`,
+            ROW_NUMBER() OVER(PARTITION BY `bill_description` ORDER BY `bill_id` DESC) rn
+            FROM `bills`
+            WHERE `bill_description` LIKE '%') a WHERE rn = 1";
 $connection = connect();
 $query = mysqli_query($connection, $sql);
 function viewBills($query)
@@ -320,9 +332,17 @@ function viewBills($query)
                                 </td>
                                 <td>
                                     <?php
-                                    date_default_timezone_set('Asia/Manila');
-                                    $format = date_create($row['bill_deadline']);
-                                    echo $deadline = date_format($format, "F d, Y");
+                                    $date = date_create($row['bill_deadline']);
+                                    $deadline = date_format($date, "F d, Y");
+                                    $current = date("F d, Y");
+                                    $_deadline = strtotime($deadline);
+                                    $_current = strtotime($current);
+                                    if ($_current > $_deadline || $_current == $_deadline) {
+                                        echo '<p class="text mb-0" style="color:red;">' . $deadline . '</p>';
+                                        echo '<p class="small text mb-0" style="color:red;">Deadline!</p>';
+                                    } else {
+                                        echo $deadline;
+                                    }
                                     ?>
                                 </td>
                                 <td>
@@ -351,26 +371,23 @@ function viewBills($query)
                             <label for="floatingInput">Bill Type</label>
                         </div> -->
                         <div class="form-floating mb-3">
-                            <input type="text" name="bill-description" class="form-control" id="floatingPassword"
-                                placeholder="Password">
-                            <label for="floatingPassword">Bill Description</label>
+                            <input type="text" name="bill-description" class="form-control" id="floatingDescription"
+                                placeholder="Bill Description" required>
+                            <label for="floatingDescription">Bill Description</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" name=bill-amount class="form-control" id="floatingPassword"
-                                placeholder="Password">
-                            <label for="floatingPassword">Bill Amount</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="hidden" name="bill-publish" value="<?php date_default_timezone_set('Asia/Manila');
-                            $t = date('Y-m-d H:i:s');
-                            echo $t ?>" class="form-control" id="floatingPassword" placeholder="Password">
-                            <label for="floatingPassword">Bill Date</label>
+                            <input type="number" name=bill-amount class="form-control" id="floatingAmount"
+                                placeholder="Bill Amount" required>
+                            <label for="floatingAmount">Bill Amount</label>
                         </div>
                         <div class="form-floating">
-                            <input type="date" name="bill-deadline" class="form-control" id="floatingPassword"
-                                placeholder="Password">
-                            <label for="floatingPassword">Bill Deadline</label>
+                            <input type="date" name="bill-deadline" class="form-control" id="floatingdeadline"
+                                placeholder="Bill Deadline" required>
+                            <label for="floatingDeadline">Bill Deadline</label>
                         </div>
+                        <input type="hidden" name="bill-publish" value="<?php date_default_timezone_set('Asia/Manila');
+                        $t = date('Y-m-d H:i:s');
+                        echo $t ?>">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -6,9 +6,8 @@ if (empty($_SESSION['pin'])) {
 }
 $connection = connect();
 $num = 0;
-$sql = "SELECT transactions.transaction_id, student_signup.student_schoolid, student_signup.student_lname, student_signup.student_fname, student_signup.student_mobilenumber, bills.bill_description, bills.bill_amount, bills.bill_publish, bills.bill_deadline, transaction_datepaid, transaction_referenceno, transaction_paymentmethod 
+$sql = "SELECT *
 FROM `transactions`
-JOIN bills ON transactions.bill_id = bills.bill_id 
 JOIN student_signup ON transactions.student_id = student_signup.student_id
 ORDER BY transaction_datepaid ASC
 ";
@@ -22,8 +21,6 @@ $query = $connection->query($sql);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"> -->
-
     <!-- transaction resources -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,6 +29,11 @@ $query = $connection->query($sql);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Admin | Paid</title>
     <link rel="stylesheet" href="./css/paid.css">
+    <style>
+        .row-description {
+            text-transform: capitalize;
+        }
+    </style>
 </head>
 
 <body id="body-pd">
@@ -94,36 +96,32 @@ $query = $connection->query($sql);
                         </tr>
                     </thead>
                     <?php while ($row = $query->fetch_assoc()) { ?>
-                    <tbody>
-                        <tr>
-                            <td scope="row">
+                        <tbody>
+                            <tr>
+                                <td scope="row">
                                     <?php echo $num = $num + 1 ?>
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                                     <?php echo $row['student_schoolid'] ?>
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                                     <?php echo $row['student_lname'] ?>
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                                     <?php echo $row['student_fname'] ?>
-                            </td>
-                            <td>
-                                    <?php echo $row['bill_description'] ?>
-                            </td>
-                            <td>
-                                    <?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>
-                            </td>
-                            <td>
-                                <button type="button" id="reference-button" id="myInput"
-                                    value="<?php echo $row["transaction_referenceno"] ?>">
-                                        <?php echo $row["transaction_referenceno"] ?>
-                                    <button type="button" id="reference-button"><i class='bx bxs-copy'></i></button>
-                                    <!-- dili paka ma copy ang reference number       -->
-                            </td>
-                            <td>
-                                <a href="#myModal" data-bs-toggle="modal" data-bs-target="#myModal" id="custId"
-                                    data-id="<?php echo $row['transaction_id'] ?>">
+                                </td>
+                                <td class="row-description">
+                                    <?php echo $row['transaction_description'] ?>
+                                </td>
+                                <td>
+                                    <?php echo '₱ ' . number_format($row['transaction_amount'], 2) ?>
+                                </td>
+                                <td>
+                                    <?php echo $row["transaction_referenceno"] ?>
+                                </td>
+                                <td>
+                                    <a href="#myModal" data-bs-toggle="modal" data-bs-target="#myModal" id="custId"
+                                        data-id="<?php echo $row['transaction_id'] ?>">
                                         <i class='bx bx-dots-horizontal-rounded'></i>
                                     </a>
                                 </td>
@@ -140,7 +138,7 @@ $query = $connection->query($sql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">User bills details</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">User Bills Details</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -159,6 +157,24 @@ $query = $connection->query($sql);
 </body>
 <script src="../js/bootstrapV5.3.0/bootstrap.bundle.min.js"></script>
 <script>
+
+    //copy paste
+    function myFunction() {
+        // Get the text field
+        var copyText = document.getElementById("myInput");
+        console.log(copyText)
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        // Alert the copied text
+        alert("Copied the text: " + copyText.value);
+    }
+
+    //side bar
     document.addEventListener("DOMContentLoaded", function (event) {
 
         const showNavbar = (toggleId, navId, bodyId, headerId) => {
@@ -212,16 +228,7 @@ $query = $connection->query($sql);
             });
         });
     });
-    document.getElementById('reference-button').addEventListener('click', () => {
-        var copyText = document.getElementById('myInput');
-        console.log('click');
-        // copyText.setSelectionRange(0, 99999); // For mobile devices
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText.value);
 
-        // Alert the copied text
-        alert("Copied the text: " + copyText.value);
-    });
 </script>
 
 </html>

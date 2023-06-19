@@ -7,8 +7,7 @@ if (!empty($_POST['rowid'])) {
   // Run the Query
   // Fetch Records
   // Echo the data you want to show in modal
-  $sql = "SELECT transactions.transaction_id, bills.bill_description, bills.bill_amount, bills.bill_publish, bills.bill_deadline, transaction_datepaid, transaction_referenceno, transaction_paymentmethod FROM `transactions`
-  JOIN bills ON transactions.bill_id = bills.bill_id WHERE transaction_id=$id";
+  $sql = "SELECT * FROM `transactions` WHERE transaction_id=$id";
   $query = mysqli_query($connection, $sql);
   $details = mysqli_fetch_assoc($query);
   $format = date_create($details["transaction_datepaid"]);
@@ -43,7 +42,7 @@ if (!empty($_POST['rowid'])) {
     <div class="col-md-8 col-lg-9">
       <p class="small text-muted mb-1">Description</p>
       <p>
-        <?php echo $details["bill_description"] ?>
+        <?php echo $details["transaction_description"] ?>
       </p>
     </div>
     <!-- <div class="col-md-4 col-lg-6">
@@ -58,7 +57,7 @@ if (!empty($_POST['rowid'])) {
   <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
     <p class="small text-muted mb-1">Paid</p>
     <p class="lead fw-bold mb-0" style="color: #f37a27;">
-      <?php echo '₱ ' . number_format($details['bill_amount'], 2) ?>
+      <?php echo '₱ ' . number_format($details['transaction_amount'], 2) ?>
     </p>
   </div>
 </div>

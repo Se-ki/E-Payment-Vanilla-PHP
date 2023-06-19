@@ -24,8 +24,10 @@ function Pin($row, $pin)
         $sql = "INSERT INTO admin_login VALUES(0, '$t', $id)";
         mysqli_query($connection, $sql);
         header('location: /project/project-system/admin/main.php');
-    } else {
-        header('location: /project/project-system/admin/login.php?err=tru');
+    } else { ?>
+        <script>alert("Incorrect pin!")</script>
+        <script>window.location.href = "/project/project-system/admin/login.php"</script>
+        <?php
     }
 }
 ?>

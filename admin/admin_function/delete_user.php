@@ -22,6 +22,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 ";
 $connection->multi_query($sql);
 ?>
+<script>alert("Deleted!")</script>
+<script>window.location.href = "/project/project-system/admin/users.php"</script>
 <!-- 
  SET FOREIGN_KEY_CHECKS = 0;
 

@@ -6,8 +6,7 @@ if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
 require "../project-system/functions/database.php";
 $connection = connect();
 $id = $_SESSION['student_id'];
-$stmt = $connection->prepare("SELECT transactions.transaction_id, bills.bill_description, bills.bill_amount, bills.bill_publish, bills.bill_deadline, transaction_datepaid, transaction_referenceno, transaction_paymentmethod FROM `transactions`
-JOIN bills ON transactions.bill_id = bills.bill_id WHERE transactions.student_id=$id ORDER BY transaction_datepaid ASC");
+$stmt = $connection->prepare("SELECT * FROM `transactions` WHERE student_id=$id ORDER BY transaction_datepaid ASC");
 $stmt->execute();
 $result = $stmt->get_result();
 function view($result)
@@ -521,6 +520,14 @@ function view($result)
             cursor: pointer;
         }
 
+        .dropdown-toggle {
+            text-transform: capitalize;
+        }
+
+        .row {
+            text-transform: capitalize;
+        }
+
         /* .bx{
     width: 100px;
 } */
@@ -606,8 +613,8 @@ function view($result)
                 <tbody>
                     <?php while ($row = view($result)) { ?>
                         <tr>
-                            <td scope="row"> <span class="fa fa-briefcase mr-1"></span>
-                                <?php echo $row['bill_description'] ?>
+                            <td scope="row" class="row"> <span class="fa fa-briefcase mr-1"></span>
+                                <?php echo $row['transaction_description'] ?>
                             </td>
                             <td><span class="">
                                     <?php echo $row['transaction_paymentmethod'] ?>
@@ -619,7 +626,7 @@ function view($result)
                                 ?>
                             </td>
                             <td class="d-flex justify-content-end align-items-center"><span class="">
-                                    <?php echo '₱ ' . number_format($row['bill_amount'], 2) ?>
+                                    <?php echo '₱ ' . number_format($row['transaction_amount'], 2) ?>
                             </td>
 
                             <td>

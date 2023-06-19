@@ -5,7 +5,7 @@
 # Project name:          ceitpaymentonlinedez                            #
 # Author:                                                                #
 # Script type:           Database creation script                        #
-# Created on:            2023-06-10 12:47                                #
+# Created on:            2023-06-17 00:55                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -43,6 +43,26 @@ CREATE TABLE `student_login` (
     `student_id` INTEGER(15) NOT NULL,
     CONSTRAINT `PK_student_login` PRIMARY KEY (`login_id`)
 );
+
+# ---------------------------------------------------------------------- #
+# Add table "transactions"                                               #
+# ---------------------------------------------------------------------- #
+
+
+
+CREATE TABLE `transactions` (
+    `transaction_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `transaction_description` VARCHAR(100),
+    `transaction_amount` INTEGER,
+    `transaction_deadline` DATE,
+    `transaction_datepaid` DATETIME,
+    `transaction_referenceno` VARCHAR(40),
+    `transaction_paymentmethod` VARCHAR(40),
+    `student_id` INTEGER(15) NOT NULL,
+    CONSTRAINT `PK_transactions` PRIMARY KEY (`transaction_id`)
+);
+
+
 
 # ---------------------------------------------------------------------- #
 # Add table "admin"                                                      #
@@ -93,6 +113,8 @@ CREATE TABLE `admin_logout` (
 # Add table "bills"                                                      #
 # ---------------------------------------------------------------------- #
 
+
+
 CREATE TABLE `bills` (
     `bill_id` INTEGER NOT NULL AUTO_INCREMENT,
     `bill_description` VARCHAR(100),
@@ -101,23 +123,7 @@ CREATE TABLE `bills` (
     `bill_deadline` DATETIME,
     `admin_id` INTEGER NOT NULL,
     `student_id` INTEGER(15) NOT NULL,
-    CONSTRAINT `PK_bills` PRIMARY KEY (`bill_id`, `student_id`)
-);
-
-# ---------------------------------------------------------------------- #
-# Add table "transactions"                                               #
-# ---------------------------------------------------------------------- #
-
-
-
-CREATE TABLE `transactions` (
-    `transaction_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `transaction_datepaid` DATETIME,
-    `transaction_referenceno` VARCHAR(100),
-    `transaction_paymentmethod` VARCHAR(100),
-    `bill_id` INTEGER NOT NULL,
-    `student_id` INTEGER(15) NOT NULL,
-    CONSTRAINT `PK_transactions` PRIMARY KEY (`transaction_id`, `bill_id`, `student_id`)
+    CONSTRAINT `PK_bills` PRIMARY KEY (`bill_id`)
 );
 
 
@@ -135,8 +141,8 @@ ALTER TABLE `bills` ADD CONSTRAINT `student_signup_bills`
 ALTER TABLE `student_login` ADD CONSTRAINT `student_signup_student_login` 
     FOREIGN KEY (`student_id`) REFERENCES `student_signup` (`student_id`);
 
-ALTER TABLE `transactions` ADD CONSTRAINT `bills_transactions` 
-    FOREIGN KEY (`bill_id`, `student_id`) REFERENCES `bills` (`bill_id`,`student_id`);
+ALTER TABLE `transactions` ADD CONSTRAINT `student_signup_transactions` 
+    FOREIGN KEY (`student_id`) REFERENCES `student_signup` (`student_id`);
 
 ALTER TABLE `admin_login` ADD CONSTRAINT `admin_admin_login` 
     FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);

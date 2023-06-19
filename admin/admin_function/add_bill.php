@@ -7,8 +7,7 @@ function description($connection, $description)
     $_sql = "SELECT * FROM bills WHERE bill_description = '$description'";
     $query = mysqli_query($connection, $_sql);
     if (mysqli_num_rows($query)) {
-        echo '<script>alert("Bill already exist!")</script>';
-        header('location: /project/project-system/admin/bills.php?q=true');
+        return false;
     } else {
         return true;
     }
@@ -20,18 +19,22 @@ if (isset($_POST['save'])) {
     $deadline = $_POST['bill-deadline'];
     $id = $_SESSION['admin_id'];
     $connection = connect();
-
-    $sql_stud = "SELECT * FROM student_signup";
-    $student_q = mysqli_query($connection, $sql_stud);
-    while ($row_stdnt = $student_q->fetch_assoc()) {
-        $student_id = $row_stdnt['student_id'];
-        $sql_bill = "INSERT INTO `bills`(`bill_description`, `bill_amount`, `bill_publish`, `bill_deadline`, `status`, `admin_id`, `student_id`) VALUES ('$description', $amount, '$date', '$deadline', 0, $id, $student_id)";
-        mysqli_query($connection, $sql_bill);
+    if (description($connection, $description) == false) {
+        ?>
+        <script>alert("Bill already exist!")</script>;
+        <script>window.location.href = "/project/project-system/admin/bills.php"</script>;
+        <?php
+    } else {
+        $sql_stud = "SELECT * FROM student_signup";
+        $student_q = mysqli_query($connection, $sql_stud);
+        while ($row_stdnt = $student_q->fetch_assoc()) {
+            $student_id = $row_stdnt['student_id'];
+            $sql_bill = "INSERT INTO `bills`(`bill_description`, `bill_amount`, `bill_publish`, `bill_deadline`, `status`, `admin_id`, `student_id`) VALUES ('$description', $amount, '$date', '$deadline', 0, $id, $student_id)";
+            mysqli_query($connection, $sql_bill);
+        } ?>
+        <script>alert("Bill added! <?php echo $description ?>")</script>
+        <?php
+        header('location: /project/project-system/admin/bills.php');
     }
-    header('location: /project/project-system/admin/bills.php');
 }
-
-
-
-
 ?>
