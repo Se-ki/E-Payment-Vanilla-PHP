@@ -12,7 +12,7 @@ if (!empty($_SESSION['email'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrapV5.3.0/bootstrap.min.css">
-    <title>Welcome to CEITt E-Payment</title>
+    <title>Welcome to CEIT E-Payment</title>
     <!-- <link rel="stylesheet" href="./css/index.css"> -->
     <style>
         body {
@@ -68,8 +68,12 @@ if (!empty($_SESSION['email'])) {
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
+        .btn:hover {
+            background-color: #32612d;
+            color: #fdfdfd;
+        }
+
         a:hover {
-            background-color: #c3c9de;
             font-size: 20px;
         }
 
@@ -87,19 +91,15 @@ if (!empty($_SESSION['email'])) {
         .carousel-item {
             left: 45%;
         }
-
-        .navbar {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <nav class="navbar bg-body-tertiary navbar-expand-sm w-100 p-3 position-absolute top-0 start-0">
+        <nav class="navbar navbar-expand-sm w-100 p-3 position-absolute top-0 start-0">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1"><img src="./img/logo-no-bg.png" width="120px" height="50px" alt=""
-                        srcset=""></span>
+                <a href="#" class="navbar-brand d-flex ms-auto"><span><img src="./img/logo-no-bg.png" width="120px"
+                            height="50px" alt="" srcset=""></span></a>
             </div>
         </nav>
         <div class="card">

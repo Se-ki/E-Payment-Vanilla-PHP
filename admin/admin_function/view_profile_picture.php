@@ -1,5 +1,5 @@
 <?php
-require "../functions/database.php";
+require "../../functions/database.php";
 session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
@@ -10,13 +10,6 @@ $sql = "SELECT * FROM student_signup WHERE student_id = $id";
 $query = $connection->query($sql);
 $result = $query->fetch_assoc();
 ?>
-<!-- SET FOREIGN_KEY_CHECKS = 0;
-// if we delete the registered student it will also delete hes
-DELETE FROM student_signup WHERE student_id = 2;
-DELETE FROM student_login WHERE student_id = 2;
-DELETE FROM student_logout WHERE student_id = 2;
-
-SET FOREIGN_KEY_CHECKS = 1; -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -233,28 +226,28 @@ SET FOREIGN_KEY_CHECKS = 1; -->
         <nav class="nav">
             <div>
                 <a href="#" class="nav_logo">
-                    <img src="../img/ava3.png" width="25px" height=25px"></img><span class="nav_logo-name">ADMIN
+                    <img src="../../img/ava3.png" width="25px" height=25px"></img><span class="nav_logo-name">ADMIN
                     </span>
                     <!-- <img src="../img/logo.jpg" width="12%" height="80%" alt=""> -->
                 </a>
-                <a href="./main.php" class="nav_link">
+                <a href="../main.php" class="nav_link">
                     <i class='bx bx-grid-alt nav_icon'></i>
                     <span class="nav_name">Main</span>
                 </a>
                 <div class="nav_list">
-                    <a href="./bills.php" class="nav_link">
+                    <a href="../bills.php" class="nav_link">
                         <i class='bx bx-list-plus nav_icon'></i>
                         <span class="nav_name">Bills</span>
                     </a>
-                    <a href="./users.php" class="nav_link active">
+                    <a href="../users.php" class="nav_link active">
                         <i class='bx bx-user nav_icon'></i>
                         <span class="nav_name">Users</span>
                     </a>
-                    <a href="./paid.php" class="nav_link">
+                    <a href="../paid.php" class="nav_link">
                         <i class='bx bxs-user-check nav_icon'></i>
                         <span class="nav_name">Paid</span>
                     </a>
-                    <a href="./logs.php" class="nav_link">
+                    <a href="../logs.php" class="nav_link">
                         <i class='bx bx-group nav_icon'></i>
                         <span class="nav_name">Logs</span>
                     </a>
@@ -284,12 +277,12 @@ SET FOREIGN_KEY_CHECKS = 1; -->
                         <div class="card">
                             <div class="card-body text-center p-4">
                                 <?php if (empty($result['profile_picture'])) { ?>
-                                    <img src="../img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
+                                    <img src="../../img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
                                         style="width: 150px; padding-top: 11px;">
                                 <?php } else if (!empty($result['profile_picture'])) { ?>
-                                        <img src="../img/<?php echo $result['profile_picture'] ?>" alt="avatar"
+                                        <img src="../../img/<?php echo $result['profile_picture'] ?>" alt="avatar"
                                             class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;">
-                                <?php } ?>
+                                    <?php } ?>
                                 </a>
                                 <h4 class="my-2" style="text-transform: capitalize;">
                                     <?php echo $result['student_fname'] ?>

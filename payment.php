@@ -1,19 +1,12 @@
 <?php
-session_start();
-require "./functions/database.php";
+require "./functions/payment.php";
 if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
     header("location: login.php");
 }
-$connection = connect();
-if (!empty($_POST['rowid'])) {
-    $id = mysqli_escape_string($connection, $_POST['rowid']);
-    $sql = "SELECT * FROM bills WHERE bill_id=$id";
-    $result = mysqli_query($connection, $sql);
-    $row = mysqli_fetch_assoc($result);
-}
+$row = listOfPayment($paymet_data);
 ?>
 <!--Container Main start-->
-<div class="card" style="width: 29rem;">
+<div class="card">
     <div class="card-body">
         <h4 style="margin-bottom: 2rem">Payment Method</h4>
         <form action="./functions/payment.php" method="post">
@@ -32,13 +25,16 @@ if (!empty($_POST['rowid'])) {
             <div class="row">
                 <div class="col">
                     <p class="small text-muted mb-1">Description</p>
-                    <input type="text" name="description" value="<?php echo $row['bill_description'] ?>"
+                    <input type="text" value="<?php echo $row['bill_description'] ?>" class="form-control" id=""
+                        disabled>
+                    <!-- to send data -->
+                    <input type="hidden" name="description" value="<?php echo $row['bill_description'] ?>"
                         class="form-control" id="">
                 </div>
                 <div class="col">
                     <p class="small text-muted mb-1">Amount</p>
                     <input type="text" value="<?php echo "₱ " . number_format($row['bill_amount'], 2) ?>"
-                        class="form-control" id="">
+                        class="form-control" id="" disabled>
                     <input type="hidden" name="amount" value="<?php echo $row['bill_amount'] ?>" class="form-control"
                         id="">
                 </div>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('Asia/Manila');
-require "./database.php";
+require "database.php";
 if (isset($_POST['payment'])) {
     $paymentmethod = $_POST['paymentmethod'];
     $descript = $_POST['description'];
@@ -29,5 +29,20 @@ if (isset($_POST['payment'])) {
         <script>alert("The reference number that you've entered was already used.")</script>
         <script> window.location.href = '/project/project-system/bills.php'</script>
     <?php }
+}
+$rowid = $_POST['rowid'];
+function getDataOfBills($rowid)
+{
+    $connection = connect();
+    if (!empty($rowid)) {
+        $id = mysqli_escape_string($connection, $rowid);
+        $sql = "SELECT * FROM bills WHERE bill_id=$id";
+        return $connection->query($sql);
+    }
+}
+$paymet_data = getDataOfBills($rowid);
+function listOfPayment($payment_data)
+{
+    return $payment_data->fetch_assoc();
 }
 ?>

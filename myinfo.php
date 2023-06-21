@@ -1,18 +1,7 @@
 <?php
-session_start();
-require "./functions/database.php";
+require "./functions/myinfo.php";
 if (empty($_SESSION['email']) && $_SESSION['email']) {
     header('location: login.php');
-}
-$connection = connect();
-$id = $_SESSION['student_id'];
-$sql = "SELECT profile_picture FROM student_signup WHERE student_id=$id";
-$query = $connection->query($sql);
-$row = $query->fetch_assoc();
-if (isset($_POST['save'])) {
-    $pic = $_POST['picture'];
-    $sql_s = "UPDATE student_signup SET profile_picture='$pic' WHERE student_id=$id";
-    $connection->query($sql_s);
 }
 ?>
 <!DOCTYPE html>
@@ -46,14 +35,16 @@ if (isset($_POST['save'])) {
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
-                            <?php if (empty($row['profile_picture']) || $row['profile_picture'] == null) { ?>
+                            <?php
+                            $row = listOfInfoStudent($student_info);
+                            if (empty($row['profile_picture']) || $row['profile_picture'] == null) { ?>
                                 <a href="" data-bs-toggle="modal" data-bs-target="#changeprofile">
                                     <img src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
                                         style="width: 150px; padding-top: 11px;">
                                 </a>
                             <?php } else { ?>
                                 <a href="" data-bs-toggle="modal" data-bs-target="#changeprofile">
-                                    <img src="img/<?php echo $row['profile_picture'] ?>" alt="avatar"
+                                    <img src="./img/<?php echo $row['profile_picture'] ?>" alt="avatar"
                                         class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;"
                                         accept=".jpg, .jpeg, .png">
                                 </a>
@@ -70,7 +61,7 @@ if (isset($_POST['save'])) {
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="post">
+                                            <form action="" method="post">
                                                 <input type="file" name="picture" id="">
 
                                         </div>
@@ -201,7 +192,7 @@ if (isset($_POST['save'])) {
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="./functions/myinfo.php" method="post">
+                                            <form action="" method="post">
                                                 <div class="form-floating mb-3">
                                                     <input type="password" class="form-control" name="password"
                                                         id="newpass" placeholder="name@example.com">

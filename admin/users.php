@@ -1,21 +1,10 @@
 <?php
-require "../functions/database.php";
 session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
-$num = 0;
-$connection = connect();
-$sql = "SELECT * FROM student_signup ORDER BY student_created DESC";
-$query = mysqli_query($connection, $sql);
+require "./admin_function/users.php";
 ?>
-<!-- SET FOREIGN_KEY_CHECKS = 0;
-// if we delete the registered student it will also delete hes
-DELETE FROM student_signup WHERE student_id = 2;
-DELETE FROM student_login WHERE student_id = 2;
-DELETE FROM student_logout WHERE student_id = 2;
-
-SET FOREIGN_KEY_CHECKS = 1; -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -288,7 +277,7 @@ SET FOREIGN_KEY_CHECKS = 1; -->
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $query->fetch_assoc()) { ?>
+                    <?php while ($row = listOfUsers($getUser)) { ?>
                         <tr>
                             <td>
                                 <?php echo $num = $num + 1 ?>
@@ -319,7 +308,7 @@ SET FOREIGN_KEY_CHECKS = 1; -->
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item"
-                                                href="./view.php?id=<?php echo $row['student_id'] ?>">View</a>
+                                                href="./admin_function/view_profile_picture.php?id=<?php echo $row['student_id'] ?>">View</a>
                                         </li>
                                         <li><a class="dropdown-item" href="#pay" class="btn btn-primary"
                                                 data-bs-toggle="modal" data-bs-target="#addbill" id="custId"

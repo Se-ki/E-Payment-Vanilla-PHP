@@ -13,7 +13,7 @@
         body {
             color: #fff;
             font-family: 'Roboto', sans-serif;
-            background-image: url('./img/login_image.jpeg');
+            background-image: url('./img/loginbg.jpg');
         }
 
         .form-control {
@@ -137,9 +137,9 @@
     <div class="login-form">
         <form action="./functions/login.php" method="post" class="needs-validation" novalidate>
             <?php if (isset($_GET['err'])) { ?>
-            <div id='err_feedback' class="alert alert-warning" role="alert">
-                Incorrect email and password!
-            </div>
+                <div id='err_feedback' class="alert alert-warning" role="alert">
+                    Incorrect email and password!
+                </div>
             <?php } ?>
             <h2>Login</h2>
             <p>Please fill in this form to proceed!</p>

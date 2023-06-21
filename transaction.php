@@ -1,18 +1,10 @@
 <?php
-session_start();
+require "./functions/transaction.php";
 if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
     header("location: login.php");
 }
-require "../project-system/functions/database.php";
-$connection = connect();
-$id = $_SESSION['student_id'];
-$stmt = $connection->prepare("SELECT * FROM `transactions` WHERE student_id=$id ORDER BY transaction_datepaid ASC");
-$stmt->execute();
-$result = $stmt->get_result();
-function view($result)
-{
-    return mysqli_fetch_assoc($result);
-}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -586,20 +578,11 @@ function view($result)
                     class="navbar-toggler-icon"></span> </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-lg-auto">
-                    <!-- <li class="nav-item"> <a class="nav-link" href="#"><span
-                                    class="fa fa-bell-o font-weight-bold"></span> <span 
-                                    class="notify">Notifications</span> </a> </li> -->
                     <li class="nav-item "> <a href="#"><span class="fa fa-search"></span></a> <input type="search"
                             class="dark" placeholder="Search"> </li>
                 </ul>
             </div>
         </nav>
-        <!-- <div class="row mt-2 pt-2">
-                <div class="d-flex justify-content-start align-items-center">
-                    <p class="text mx-3">Total</p>
-                    <p class="text-white ml-4 money"></p>
-                </div>
-            </div> -->
         <div class="table-responsive mt-3">
             <table class="table table-dark table-borderless">
                 <thead>
@@ -611,7 +594,7 @@ function view($result)
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = view($result)) { ?>
+                    <?php while ($row = listOfTransactions($data_transaction)) { ?>
                         <tr>
                             <td scope="row" class="row"> <span class="fa fa-briefcase mr-1"></span>
                                 <?php echo $row['transaction_description'] ?>
@@ -639,7 +622,7 @@ function view($result)
                     <?php } ?>
                 </tbody>
             </table>
-            <?php if (!$result->num_rows) { ?>
+            <?php if (!$data_transaction->num_rows) { ?>
                 <center>
                     <p class="text-muted pl-1">No transaction has been made.</p>
                 </center>

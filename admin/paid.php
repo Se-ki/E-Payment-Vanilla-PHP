@@ -1,17 +1,9 @@
 <?php
-require "../functions/database.php";
 session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
-$connection = connect();
-$num = 0;
-$sql = "SELECT *
-FROM `transactions`
-JOIN student_signup ON transactions.student_id = student_signup.student_id
-ORDER BY transaction_datepaid ASC
-";
-$query = $connection->query($sql);
+require "./admin_function/paid.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +87,7 @@ $query = $connection->query($sql);
                             <!-- <th scope="col">Action</th> -->
                         </tr>
                     </thead>
-                    <?php while ($row = $query->fetch_assoc()) { ?>
+                    <?php while ($row = listOfTransactions($transactions)) { ?>
                         <tbody>
                             <tr>
                                 <td scope="row">
@@ -220,7 +212,7 @@ $query = $connection->query($sql);
             var rowid = $(e.relatedTarget).data('id');
             $.ajax({
                 type: 'post',
-                url: 'admin_function/paid.php', //Here you will fetch records 
+                url: 'admin_function/paid_modal.php', //Here you will fetch records 
                 data: 'rowid=' + rowid, //Pass $id
                 success: function (data) {
                     $('.fetched-data').html(data);//Show fetched data from database

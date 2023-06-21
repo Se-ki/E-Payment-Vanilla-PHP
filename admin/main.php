@@ -1,10 +1,9 @@
 <?php
-require "../functions/database.php";
+require "./admin_function/main.php";
 session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
-$connection = connect();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +22,22 @@ $connection = connect();
         <?php echo $_SESSION['admin_name'] ?>
     </title>
     <link rel="stylesheet" href="./css/main.css">
+    <style>
+        .header-admin {
+            width: 100%;
+            height: var(--header-height);
+            /* position: fixed; */
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: end;
+            padding: 0 1rem;
+            background-color: var(--white-color);
+            z-index: var(--z-fixed);
+            transition: .5s
+        }
+    </style>
 </head>
 
 <body id="body-pd">
@@ -30,6 +45,9 @@ $connection = connect();
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
+        <p class="header-admin">Admin |
+            <?php echo $_SESSION['admin_name'] ?>
+        </p>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
@@ -37,7 +55,6 @@ $connection = connect();
                 <a href="#" class="nav_logo">
                     <img src="../img/ava3.png" width="25px" height=25px"></img><span class="nav_logo-name">ADMIN
                     </span>
-                    <!-- <img src="../img/logo.jpg" width="12%" height="80%" alt=""> -->
                 </a>
                 <div class="nav_list">
                     <a href="./main.php" class="nav_link active">
@@ -78,18 +95,7 @@ $connection = connect();
                         <i class="icon-card fa fa-users  mb-2"></i>
                         <h4 style="color:white;">Total Users</h4>
                         <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT * from student_signup";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + 1;
-                                }
-                            }
-                            echo $count;
-                            ?>
+                            <?php echo totalUser($connection); ?>
                         </h5>
                     </div>
                 </div>
@@ -98,18 +104,7 @@ $connection = connect();
                         <i class='icon-card bx bxs-wallet mb-2'></i>
                         <h4 style="color:white;">Total Amount</h4>
                         <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT * from `transactions`";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + $row['transaction_amount'];
-                                }
-                            }
-                            echo '₱ ' . number_format("$count", 2);
-                            ?>
+                            <?php echo '₱ ' . number_format(totalAmount($connection), 2); ?>
                         </h5>
                     </div>
                 </div>
@@ -118,18 +113,7 @@ $connection = connect();
                         <i class="icon-card fa fa-list mb-2"></i>
                         <h4 style="color:white;">Total Bills</h4>
                         <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT DISTINCT bill_description from `bills`";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + 1;
-                                }
-                            }
-                            echo $count;
-                            ?>
+                            <?php echo totalBills($connection); ?>
                         </h5>
                     </div>
                 </div>
@@ -138,18 +122,7 @@ $connection = connect();
                         <i class='icon-card bx bx-money-withdraw mb-2'></i>
                         <h4 style="color:white;">Total User Paid</h4>
                         <h5 style="color:white;">
-                            <?php
-                            $sql = "SELECT * from transactions";
-                            $result = $connection->query($sql);
-                            $count = 0;
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-
-                                    $count = $count + 1;
-                                }
-                            }
-                            echo $count;
-                            ?>
+                            <?php echo totalUserPaid($connection); ?>
                         </h5>
                     </div>
                 </div>

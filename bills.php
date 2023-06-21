@@ -311,7 +311,7 @@ date_default_timezone_set('Asia/Manila');
                                 $_current = strtotime($current);
                                 if ($_current > $_deadline || $_current == $_deadline) {
                                     echo '<p class="text mb-0" style="color:red;">' . $deadline . '</p>';
-                                    echo '<p class="small text mb-0" style="color:red;">Deadline na doy bayad na!</p>';
+                                    echo '<p class="small text mb-0" style="color:red;">Missed deadline.</p>';
                                 } else {
                                     echo $deadline;
                                 }

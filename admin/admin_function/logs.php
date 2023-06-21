@@ -1,8 +1,10 @@
 <?php
+session_start();
+require "../functions/database.php";
 $i = 0;
 $x = 0;
-$connection = connect();
 
+$connection = connect();
 // To fetch login data
 $sql_login = "SELECT student_signup.student_lname, student_signup.student_fname, login_date FROM student_login 
 JOIN student_signup ON student_login.student_id = student_signup.student_id ORDER BY login_date DESC";

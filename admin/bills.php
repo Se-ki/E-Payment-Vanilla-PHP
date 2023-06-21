@@ -1,41 +1,10 @@
 <?php
-require "../functions/database.php";
 session_start();
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
 // fetched data
-$num = 0;
-$sort = 'DESC';
-$column = 'bill_publish';
-if (isset($_GET['column']) && isset($_GET['sort'])) {
-    $sort = $_GET['sort'];
-    $column = $_GET['column'];
-    if ($sort == 'ASC') {
-        $sort = 'DESC';
-    } else {
-        $sort = 'ASC';
-    }
-}
-// $sql = "SELECT DISTINCT bill_description, bill_amount, bill_publish, bill_deadline FROM bills ORDER BY $column $sort";
-$sql = "SELECT *
-FROM (SELECT `bill_id`, 
-            `bill_description`, 
-            `bill_amount`, 
-            `bill_publish`,
-            `bill_deadline`,
-            `status`,
-            `admin_id`, 
-            `student_id`,
-            ROW_NUMBER() OVER(PARTITION BY `bill_description` ORDER BY `bill_id` DESC) rn
-            FROM `bills`
-            WHERE `bill_description` LIKE '%') a WHERE rn = 1";
-$connection = connect();
-$query = mysqli_query($connection, $sql);
-function viewBills($query)
-{
-    return $query->fetch_assoc();
-}
+require "./admin_function/bills.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -312,7 +281,7 @@ function viewBills($query)
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = mysqli_fetch_assoc($query)) { ?>
+                        <?php while ($row = viewBills($total_List)) { ?>
                             <tr>
                                 <td>
                                     <?php echo $num = $num + 1; ?>

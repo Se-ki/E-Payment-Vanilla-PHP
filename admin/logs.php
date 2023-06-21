@@ -1,10 +1,8 @@
 <?php
-require "../functions/database.php";
-session_start();
+require "./admin_function/logs.php";
 if (empty($_SESSION['pin'])) {
     header("location: login.php");
 }
-require "./admin_function/logs.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -272,8 +270,8 @@ require "./admin_function/logs.php";
                 <!-- Pills navs -->
                 <ul class="dropdown-menu" id="ex1" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="dropdown-item" id="tab-login" data-mdb-toggle="pill" href="#pills-login" role="tab"
-                            aria-controls="pills-login" aria-selected="true">List of User
+                        <a class="dropdown-item active" id="tab-login" data-mdb-toggle="pill" href="#pills-login"
+                            role="tab" aria-controls="pills-login" aria-selected="true">List of User
                             Login</a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -291,7 +289,7 @@ require "./admin_function/logs.php";
             <!-- Pills content -->
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                    <h1 style="color: black;">Login</h1>
+                    <h1 style="color: black;" class="active">Login</h1>
                     <table class="table">
                         <thead>
                             <tr>

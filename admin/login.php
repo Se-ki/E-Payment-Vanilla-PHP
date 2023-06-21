@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <nav class="navbar bg-body-tertiary navbar-expand-sm w-100 p-3 position-absolute top-0 start-0">
+    <nav class="navbar bg-body-tertiary navbar-expand-sm w-100 p-2 position-absolute top-0 start-0">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1"><img src="../img/logo.jpg" width="120px" height="50px" alt=""></span>
         </div>

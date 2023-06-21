@@ -1,25 +1,5 @@
 <?php
 require "./database.php";
-// function isCreated($school_id, $mobilenumber, $email)
-// {
-//     $connection = connect();
-//     $stmt = $connection->prepare("SELECT * FROM student_signup WHERE student_schoolid=? OR student_mobilenumber=? OR student_email=?");
-//     $stmt->bind_param('sss', $school_id, $mobilenumber, $email);
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     $rows = mysqli_fetch_assoc($result);
-//     if ($school_id == $rows['student_schoolid'] && $mobilenumber == $rows['student_mobilenumber'] && $email == $rows['student_email']) {
-//         header("location: /project/project-system/signup.php?err_feedback=Account already existed.&err_sid=The school id you've inputted already existed.&err_mober=The mobile number you've inputted already existed.&err_email=The email address you've inputted already existed.");
-//         return true;
-//     } else if ($school_id == $rows['student_schoolid']) {
-//         header("location: /project/project-system/signup.php?err_sid=The school id you've inputted already existed.");
-//         return true;
-//     } else if ($email == $rows['student_email']) {
-//         header("location: /project/project-system/signup.php?err_email=The email address you've inputted already existed.");
-//         return true;
-//     }
-//     return false;
-// }
 function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $yearLevel, $mobilenumber, $address, $email, $password, $t)
 {
     //this function isCreated when it false it will automaticaly diritso og function gikan anang $connection = connect(); hangtod pa ubos
@@ -32,9 +12,6 @@ function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $ye
     $stmt->execute();
     $result = $stmt->get_result();
     $rows = mysqli_fetch_assoc($result);
-    echo $rows['student_email'];
-    echo $rows['student_mobilenumber'];
-    echo $mobilenumber;
     if ($school_id == $rows['student_schoolid'] && $mobilenumber == $rows['student_mobilenumber'] && $email == $rows['student_email']) {
         header("location: /project/project-system/signup.php?err_feedback=Account already existed.&err_sid=The school id you've inputted already existed.&err_mober=The mobile number you've inputted already existed.&err_email=The email address you've inputted already existed.");
     } else if ($school_id == $rows['student_schoolid']) {
@@ -47,7 +24,13 @@ function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $ye
         $stmt = $connection->prepare("INSERT INTO student_signup VALUES(0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,null)");
         $stmt->bind_param('sssssssssss', $firstname, $lastname, $school_id, $program, $yearLevel, $sex, $address, $email, $password, $t, $mobilenumber);
         $stmt->execute();
-        header('location: /project/project-system/signup.php?feedback=Successfully Registered!');
+        ?>
+                    <script>
+                        alert("Successfully Registered!")
+                        window.location.href = "/project/project-system/login.php"
+                    </script>
+                    <?php
+        // header('location: /project/project-system/signup.php?feedback=Successfully Registered!');
     }
 }
 if (isset($_POST['submit-button'])) {
