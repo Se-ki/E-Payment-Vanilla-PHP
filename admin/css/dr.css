@@ -44,6 +44,7 @@
             z-index: var(--z-fixed);
             transition: .5s
         }
+
         .header_toggle {
             color: var(--first-color);
             font-size: 1.5rem;
@@ -185,7 +186,8 @@
             }
         }
 
-        /*********** admin dashboard styling **********/
+        /*********** admin dashboard styling 
+        **********/
         .card {
             background-color: #AFA5D9;
             padding: 20px;
@@ -194,7 +196,6 @@
             box-shadow: 8px 5px 5px #3B3131;
         }
 
-        /* added */
         .header-admin {
             width: 100%;
             height: var(--header-height);

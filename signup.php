@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,25 +21,29 @@
             <h2>Register</h2>
             <p class=" hint-text">Create your account.</p>
             <div class="form-group">
-                <?php if (isset($_GET['feedback'])) { ?>
+                <?php if (isset($_SESSION['success'])) { ?>
                     <div class="alert alert-success" role="alert">
-                        <?php echo $_GET['feedback']; ?>
+                        <?php echo $_SESSION['success']; ?>
                     </div>
-                <?php } ?>
-                <?php if (isset($_GET['err_feedback'])) { ?>
+                    <?php
+                    unset($_SESSION['success']);
+                } ?>
+                <?php if (isset($_SESSION['data_exist'])) { ?>
                     <div id='err_feedback' class="alert alert-warning" role="alert">
-                        <?php echo $_GET['err_feedback']; ?>
+                        <?php echo $_SESSION['data_exist']; ?>
                     </div>
-                <?php } ?>
+                    <?php unset($_SESSION['data_exist']);
+                } ?>
                 <div class="form-floating mb-1">
                     <input type=" text" class="form-control" id="school_ID" name="school_ID" placeholder="School ID"
                         required="">
                     <label class="form-label" for="floatingInput">ID No.</label>
-                    <?php if (isset($_GET['err_sid'])) { ?>
+                    <?php if (isset($_SESSION['err_sid'])) { ?>
                         <div id="err_sid" style="font-size: .875em; color: #dc3545;">
-                            <?php echo $_GET['err_sid']; ?>
+                            <?php echo $_SESSION['err_sid']; ?>
                         </div>
-                    <?php } ?>
+                        <?php unset($_SESSION['err_sid']);
+                    } ?>
                     <div id="sid-invalid" style="font-size: .875em; color: #dc3545;">
                     </div>
                 </div>
@@ -128,14 +135,15 @@
             <div class="form-group">
                 <div class="form-floating">
                     <input type="text" id="mobile_number" class="form-control" name="mobilenumber"
-                        placeholder="Mobile Number" required="">
+                        placeholder="Mobile Number" maxlength="11" required="">
                     <label for="floatingInput">Mobile Number</label>
                     <div id="mbn-invalid" style="font-size: .875em;"></div>
-                    <?php if (isset($_GET['err_num'])) { ?>
+                    <?php if (isset($_SESSION['err_num'])) { ?>
                         <div id='err_mober' style="font-size: .875em; color: #dc3545;">
-                            <?php echo $_GET['err_num']; ?>
+                            <?php echo $_SESSION['err_num']; ?>
                         </div>
-                    <?php } ?>
+                        <?php unset($_SESSION['err_num']);
+                    } ?>
                     <!-- <div id="mbn-invalid" class="invalid-feedback">
                             Please enter your mobile number.
                         </div> -->
@@ -163,11 +171,12 @@
                         Please enter your csucc email. </br> Example:
                         jeon.jungkook@csucc.edu.ph
                     </div>
-                    <?php if (isset($_GET['err_email'])) { ?>
+                    <?php if (isset($_SESSION['err_email'])) { ?>
                         <div id="err_email" style="font-size: .875em; color: #dc3545;">
-                            <?php echo $_GET['err_email']; ?>
+                            <?php echo $_SESSION['err_email']; ?>
                         </div>
-                    <?php } ?>
+                        <?php unset($_SESSION['err_email']);
+                    } ?>
                 </div>
             </div>
             <div class="form-group">
@@ -244,7 +253,7 @@
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.querySelectorAll('.needs-validation')
-
+            console.log(Array.prototype.slice.call(forms))
             // Loop over them and prevent submission
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
@@ -278,9 +287,9 @@
             maleBorder.style.borderColor = "#198754";
         });
 
-        const regex = new RegExp("[-0-9]");
+        const regex = new RegExp("[0-9]");
         mobileNumber.addEventListener("beforeinput", (event) => {
-            console.log(contact.value);
+            console.log(regex.test(event.data));
             if (event.data != null && !regex.test(event.data)) {
                 event.preventDefault();
                 mbnFeedBack.style.color = "#dc3545";
@@ -326,10 +335,10 @@
                 password.style.borderColor = "#dc3545";
                 pwd_feedback.innerHTML = "Password must at least eight characters."
             } else if (password.value != confirmPassword.value) {
+                event.preventDefault(); //moved
                 password.style.borderColor = "#dc3545";
                 confirmPassword.style.borderColor = "#dc3545";
                 cnfrmpwd_feedback.innerHTML = "Password unmatched!"
-                event.preventDefault();
             } else {
                 confirmPassword.style.borderColor = "";
                 password.style.borderColor = "";
@@ -376,8 +385,8 @@
 
         function isPasswordEqual(e, password, confirmPassword) {
             if (password.value) {
+                e.preventDefault(); //moved
                 password.style.borderColor = "#198754";
-                e.preventDefault();
             }
         }
         function isCnfrmPassEqual(password, confirmPassword) {

@@ -14,8 +14,7 @@ $row = listOfPayment($paymet_data);
             <input type="hidden" name="bill_id" value="<?php echo $row['bill_id'] ?>" />
             <div class="col-sm-20">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentmethod" id="click-hide" value="GCASH"
-                        checked>
+                    <input class="form-check-input" type="radio" name="paymentmethod" value="GCASH" checked>
                     <label class="form-check-label" for="gridRadios2">
                         <img src="./img/gcash.png" alt="gcash" width="95px" height="33px"
                             style="position:relative; bottom: 4px;">
@@ -49,13 +48,13 @@ $row = listOfPayment($paymet_data);
                     <input type="text" name="datepaid" value="<?php echo $t; ?>" class="form-control" id="" disabled>
                 </div>
                 <div class="col mt-3">
-                    <p class="small text-muted mb-1">Reference No.</p>
-                    <input type="text" name="referenceno" class="form-control" id="inputgcash" required>
+                    <p class="small mb-1" id="refLabel">Reference No.</p>
+                    <input type="text" name="referenceno" class="form-control" id="inputgcash" maxlength="13" required>
                 </div>
             </div>
             <div class="">
                 <input style="display: block; justify-content:center; margin: auto; margin-top:20px;" type="submit"
-                    name="payment" value="Pay Now" class="btn btn-primary" />
+                    id="submit" name="payment" value="Pay Now" class="btn btn-primary">
             </div>
         </form>
     </div>
@@ -63,6 +62,35 @@ $row = listOfPayment($paymet_data);
 <!--Container Main end-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+<script>
+    var ref = document.getElementById("inputgcash");
+    var reflabel = document.getElementById("refLabel");
+    var submit = document.getElementById("submit");
+
+    submit.addEventListener('click', (event) => {
+        console.log(ref.value.length);
+        if (ref.value.length < 13) {
+            event.preventDefault();
+            alert("Reference number must be 13 numbers!");
+            ref.style.borderColor = "#dc3545";
+            reflabel.style.color = "#dc3545";
+        }
+
+    });
+    const regex = new RegExp("[-0-9]");
+    ref.addEventListener("beforeinput", (event) => {
+        console.log(ref.value);
+        if (event.data != null && !regex.test(event.data)) {
+            event.preventDefault();
+            alert("Invalid Input!");
+        } else if (ref.value.length > 12) {
+            alert("Reference number must be 13 numbers!");
+        } else {
+            ref.style.borderColor = "";
+            reflabel.style.color = "";
+        }
+    });
+</script>
 <script src="./js/bills.js"></script>
 </body>
 

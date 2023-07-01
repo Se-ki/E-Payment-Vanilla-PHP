@@ -253,6 +253,10 @@ require "./admin_function/bills.php";
                             <i class='bx bx-group nav_icon'></i>
                             <span class="nav_name">Logs</span>
                         </a>
+                        <a href="./daily_reports.php" class="nav_link">
+                            <i class='bx bxs-report nav_icon'></i>
+                            <span class="nav_name">Daily Reports</span>
+                        </a>
                     </div>
                 </div> <a href="./admin_function/logout.php?id=<?php echo $_SESSION['admin_id'] ?>" class="nav_link"> <i
                         class='bx bx-log-out nav_icon'></i>

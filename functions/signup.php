@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "./database.php";
 function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $yearLevel, $mobilenumber, $address, $email, $password, $t)
 {
@@ -13,17 +14,25 @@ function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $ye
     $result = $stmt->get_result();
     $rows = mysqli_fetch_assoc($result);
     if ($school_id == $rows['student_schoolid'] && $mobilenumber == $rows['student_mobilenumber'] && $email == $rows['student_email']) {
-        header("location: /project/project-system/signup.php?err_feedback=Account already existed.&err_sid=The school id you've inputted already existed.&err_mober=The mobile number you've inputted already existed.&err_email=The email address you've inputted already existed.");
+        $_SESSION['data_exist'] = "Account already existed";
+        $_SESSION['err_sid'] = "The school id you've inputted already existed.";
+        $_SESSION['err_num'] = "The mobile number you've inputted already existed.";
+        $_SESSION['err_email'] = "The email address you've inputted already existed.";
+        header("location: /project/project-system/signup.php");
     } else if ($school_id == $rows['student_schoolid']) {
-        header("location: /project/project-system/signup.php?err_sid=The school id you've inputted already existed.");
+        $_SESSION['err_sid'] = "The school id you've inputted already existed.";
+        header("location: /project/project-system/signup.php");
     } else if ($email == $rows['student_email']) {
-        header("location: /project/project-system/signup.php?err_email=The email address you've inputted already existed.");
+        $_SESSION['err_email'] = "The email address you've inputted already existed.";
+        header("location: /project/project-system/signup.php");
     } else if ($mobilenumber == $rows['student_mobilenumber']) {
-        header("location: /project/project-system/signup.php?err_num=The mobile number you've inputted already existed.");
+        $_SESSION['err_num'] = "The mobile number you've inputted already existed.";
+        header("location: /project/project-system/signup.php");
     } else {
-        $stmt = $connection->prepare("INSERT INTO student_signup VALUES(0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,null)");
+        $stmt = $connection->prepare("INSERT INTO student_signup VALUES(0, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?,null)");
         $stmt->bind_param('sssssssssss', $firstname, $lastname, $school_id, $program, $yearLevel, $sex, $address, $email, $password, $t, $mobilenumber);
         $stmt->execute();
+        $SESSION['success'] = "Login Success!";
         ?>
                     <script>
                         alert("Successfully Registered!")

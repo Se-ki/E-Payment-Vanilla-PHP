@@ -30,7 +30,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                     </nav>
                 </div>
             </div>
-
+            
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card mb-4">
@@ -39,12 +39,13 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                             $row = listOfInfoStudent($student_info);
                             if (empty($row['profile_picture']) || $row['profile_picture'] == null) { ?>
                                 <a href="" data-bs-toggle="modal" data-bs-target="#changeprofile">
-                                    <img src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
+                                    <img id="image" src="./img/no-image.jpeg" alt="avatar" class="rounded-circle img-fluid"
                                         style="width: 150px; padding-top: 11px;">
+
                                 </a>
                             <?php } else { ?>
                                 <a href="" data-bs-toggle="modal" data-bs-target="#changeprofile">
-                                    <img src="./img/<?php echo $row['profile_picture'] ?>" alt="avatar"
+                                    <img id="image" src="./img/<?php echo $row['profile_picture'] ?>" alt="avatar"
                                         class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;"
                                         accept=".jpg, .jpeg, .png">
                                 </a>
@@ -62,7 +63,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                                         </div>
                                         <div class="modal-body">
                                             <form action="" method="post">
-                                                <input type="file" name="picture" id="">
+                                                <input type="file" name="picture" id="file_image">
 
                                         </div>
                                         <div class="modal-footer">
@@ -240,6 +241,13 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
 
         modal.addEventListener("animationend", (e) => {
             modal.classList.remove("apply-shake");
+        });
+        //profile changed
+        var file = document.getElementById("file_image");
+        var image = document.getElementById("image");
+        file.addEventListener("change", (e) => {
+            console.log('change!');
+            image.src = URL.createObjectURL(e.target.files[0]);
         });
     </script>
 </body>

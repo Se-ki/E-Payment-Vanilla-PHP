@@ -1,9 +1,3 @@
-<?php
-session_start();
-if (!empty($_SESSION['email'])) {
-    header('location: /project/project-system/bills.php');
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,8 +12,8 @@ if (!empty($_SESSION['email'])) {
         body {
             margin: 0;
             padding: 0;
-            /* background-color: #9C2A34; */
-            background-image: url('./img/login_image.jpeg');
+            background-color: #658354;
+
 
         }
 
@@ -75,6 +69,7 @@ if (!empty($_SESSION['email'])) {
 
         a:hover {
             font-size: 20px;
+            padding-left: 10%;
         }
 
         #student {
