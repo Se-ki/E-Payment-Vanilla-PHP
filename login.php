@@ -1,18 +1,15 @@
 <?php
 // session_start();
 require "./functions/login.php";
+//if email session is not empty
+if (!empty($_SESSION['email']))
+    header('location: /project/project-system/bills.php');
+//user locked for many failed attempts
 if (isset($_SESSION['locked'])) {
     $session_locked = $_SESSION['locked'];
     isLocked($session_locked);
 }
-// $session_locked = $_SESSION['locked'];
-// if (isset($_SESSION['locked'])) {
-//     $time = time() - $_SESSION['locked'];
-//     if ($time > 10) {
-//         unset($_SESSION['locked']);
-//         unset($_SESSION['user_attempts']);
-//     }
-// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

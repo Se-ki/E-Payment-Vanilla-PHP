@@ -95,7 +95,7 @@
             <div class="container-fluid">
                 <a href="#" class="navbar-brand d-flex ms-auto"><span><img src="./img/logo-no-bg.png" width="120px"
                             height="50px" alt="" srcset=""></span></a>
-            </div>
+            </div> 
         </nav>
         <div class="card">
             <div class="card-body">

@@ -30,7 +30,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                     </nav>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card mb-4">
