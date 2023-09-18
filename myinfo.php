@@ -1,7 +1,7 @@
 <?php
 require "./functions/myinfo.php";
 if (empty($_SESSION['email']) && $_SESSION['email']) {
-    header('location: login.php');
+    header('location: /login.php');
 }
 ?>
 <!DOCTYPE html>
@@ -100,7 +100,7 @@ if (empty($_SESSION['email']) && $_SESSION['email']) {
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?php echo $_SESSION['school_id']; ?>
+                                        <?php echo $_SESSION['schoolid'] ?>
                                     </p>
                                 </div>
                             </div>

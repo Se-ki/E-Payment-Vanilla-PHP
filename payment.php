@@ -1,7 +1,7 @@
 <?php
 require "./functions/payment.php";
 if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
-    header("location: login.php");
+    header("location: /login.php");
 }
 $row = listOfPayment($paymet_data);
 ?>

@@ -22,7 +22,7 @@ if (isset($_POST['save'])) {
     if (description($connection, $description) == false) {
         ?>
         <script>alert("Bill already exist!")</script>;
-        <script>window.location.href = "/project/project-system/admin/bills.php"</script>;
+        <script>window.location.href = "/admin/bills.php"</script>;
         <?php
     } else {
         $sql_stud = "SELECT * FROM student_signup";
@@ -34,7 +34,7 @@ if (isset($_POST['save'])) {
         } ?>
         <script>alert("Bill added! <?php echo $description ?>")</script>
         <?php
-        header('location: /project/project-system/admin/bills.php');
+        header('location: /admin/bills.php');
     }
 }
 ?>

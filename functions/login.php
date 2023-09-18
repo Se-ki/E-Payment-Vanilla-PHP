@@ -20,7 +20,7 @@ function Login($result, $rows, $password)
     } else {
         $_SESSION['error'] = "Incorrect username or password.";
         $_SESSION['user_attempts'] += 1;
-        header("location: /project/project-system/login.php");
+        header("location: login.php");
     }
 }
 function isLocked($session_locked)
@@ -30,7 +30,6 @@ function isLocked($session_locked)
         if ($time > 10) {
             unset($_SESSION['locked']);
             unset($_SESSION['user_attempts']);
-
         }
     }
 }
@@ -39,12 +38,12 @@ function verifyPassword($password, $verify_pass, $rows)
     if ($password != $verify_pass) {
         $_SESSION['error'] = "Incorrect username or password.";
         $_SESSION['user_attempts'] += 1;
-        header("location: /project/project-system/login.php");
+        header("location: /login.php");
     } else {
         if ($password != $verify_pass) {
             $_SESSION['error'] = "Incorrect username or password.";
             $_SESSION['user_attempts'] += 1;
-            header("location: /project/project-system/login.php");
+            header("location: /login.php");
         } else {
             $_SESSION['student_id'] = $rows['student_id'];
             $_SESSION['email'] = $rows['student_email'];
@@ -53,10 +52,11 @@ function verifyPassword($password, $verify_pass, $rows)
             $_SESSION['lastname'] = $rows['student_lname'];
             $_SESSION['schoolid'] = $rows['student_schoolid'];
             $_SESSION['program'] = $rows['student_program'];
+            $_SESSION['mobilenumber'] = $rows['student_mobilenumber'];
             $_SESSION['yearlevel'] = $rows['student_yearlevel'];
             $_SESSION['gender'] = $rows['student_gender'];
             $_SESSION['address'] = $rows['student_address'];
-            header("location: /project/project-system/bills.php");
+            header("location: bills.php");
         }
     }
 }

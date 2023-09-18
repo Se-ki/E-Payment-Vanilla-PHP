@@ -1,10 +1,8 @@
 <?php
 require "./functions/transaction.php";
 if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
-    header("location: login.php");
+    header("location: user_login.php");
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

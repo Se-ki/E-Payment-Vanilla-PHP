@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "../../functions/database.php";
+require "../functions/database.php";
 if (isset($_POST['login-admin'])) {
     $pin = $_POST['pinCode'];
     $connection = connect();
@@ -23,10 +23,10 @@ function Pin($row, $pin)
         $id = $row['admin_id'];
         $sql = "INSERT INTO admin_login VALUES(0, '$t', $id)";
         mysqli_query($connection, $sql);
-        header('location: /project/project-system/admin/main.php');
+        header('location: main.php');
     } else { ?>
         <script>alert("Incorrect pin!")</script>
-        <script>window.location.href = "/project/project-system/admin/login.php"</script>
+        <script>window.location.href = "login.php"</script>
         <?php
     }
 }

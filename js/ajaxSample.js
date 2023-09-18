@@ -8,6 +8,7 @@ function showProductItems() {
         }
     });
 }
+
 function showCategory() {
     $.ajax({
         url: "./adminView/viewCategories.php",
@@ -59,6 +60,7 @@ function showOrders() {
             $('.allContent-section').html(data);
         }
     });
+
 }
 
 function ChangeOrderStatus(id) {

@@ -14,12 +14,13 @@ try {
         unset($_SESSION['student_id']);
         unset($_SESSION['password']);
         unset($_SESSION['email']);
-        header("location: /project/project-system/login.php");
+        header('location: /login.php');
     }
 } catch (\Throwable $th) {
     unset($_SESSION['student_id']);
     unset($_SESSION['password']);
     unset($_SESSION['email']);
-    header("location: /project/project-system/login.php");
+    header('location: /login.php');
+
 }
 ?>

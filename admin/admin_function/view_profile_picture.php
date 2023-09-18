@@ -265,7 +265,7 @@ $result = $query->fetch_assoc();
                     <div class="col">
                         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="./users.php">Users</a></li>
+                                <li class="breadcrumb-item"><a href="/admin/users.php">Users</a></li>
 
                             </ol>
                         </nav>
@@ -282,7 +282,7 @@ $result = $query->fetch_assoc();
                                 <?php } else if (!empty($result['profile_picture'])) { ?>
                                         <img src="../../img/<?php echo $result['profile_picture'] ?>" alt="avatar"
                                             class="rounded-circle img-fluid" style="width: 150px; padding-top: 11px;">
-                                    <?php } ?>
+                                <?php } ?>
                                 </a>
                                 <h4 class="my-2" style="text-transform: capitalize;">
                                     <?php echo $result['student_fname'] ?>

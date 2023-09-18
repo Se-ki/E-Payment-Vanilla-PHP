@@ -3,7 +3,7 @@
 require "./functions/login.php";
 //if email session is not empty
 if (!empty($_SESSION['email']))
-    header('location: /project/project-system/bills.php');
+    header('location: bills.php');
 //user locked for many failed attempts
 if (isset($_SESSION['locked'])) {
     $session_locked = $_SESSION['locked'];
@@ -11,6 +11,7 @@ if (isset($_SESSION['locked'])) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -145,7 +146,7 @@ if (isset($_SESSION['locked'])) {
 
 <body>
     <div class="login-form">
-        <form action="./functions/login.php" method="post" class="needs-validation" novalidate>
+        <form action="/login.php" method="post" class="needs-validation" novalidate>
             <?php if (isset($_SESSION['error'])) { ?>
                 <div id='err_feedback' class="alert alert-warning" role="alert">
                     <?php echo $_SESSION['error'] ?>
@@ -203,7 +204,10 @@ if (isset($_SESSION['locked'])) {
                 </div>
             <?php } ?>
         </form>
-        <div class="text-center">You don't have account? <a href="./signup.php">Sign Up</a></div>
+        <div class="text-center">You don't have account? <a href="./signup.php">Sign Up</a></br>
+            <a href="/index.php"><- back to main page</a>
+        </div>
+
     </div>
     <!-- <script src="./js/login.js"></script> -->
     <script>

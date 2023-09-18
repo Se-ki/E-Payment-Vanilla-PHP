@@ -95,12 +95,12 @@
             <div class="container-fluid">
                 <a href="#" class="navbar-brand d-flex ms-auto"><span><img src="./img/logo-no-bg.png" width="120px"
                             height="50px" alt="" srcset=""></span></a>
-            </div> 
+            </div>
         </nav>
         <div class="card">
             <div class="card-body">
                 <ul>
-                    <li><a class="btn" id="student" href="./login.php">Student</a></li>
+                    <li><a class="btn" id="student" href="./user_login.php">Student</a></li>
                     <li><a class="btn" href="./admin/login.php">Administrator</a></li>
                 </ul>
             </div>

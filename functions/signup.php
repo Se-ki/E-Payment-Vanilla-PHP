@@ -18,16 +18,16 @@ function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $ye
         $_SESSION['err_sid'] = "The school id you've inputted already existed.";
         $_SESSION['err_num'] = "The mobile number you've inputted already existed.";
         $_SESSION['err_email'] = "The email address you've inputted already existed.";
-        header("location: /project/project-system/signup.php");
+        header("location: signup.php");
     } else if ($school_id == $rows['student_schoolid']) {
         $_SESSION['err_sid'] = "The school id you've inputted already existed.";
-        header("location: /project/project-system/signup.php");
+        header("location: signup.php");
     } else if ($email == $rows['student_email']) {
         $_SESSION['err_email'] = "The email address you've inputted already existed.";
-        header("location: /project/project-system/signup.php");
+        header("location: signup.php");
     } else if ($mobilenumber == $rows['student_mobilenumber']) {
         $_SESSION['err_num'] = "The mobile number you've inputted already existed.";
-        header("location: /project/project-system/signup.php");
+        header("location: signup.php");
     } else {
         $stmt = $connection->prepare("INSERT INTO student_signup VALUES(0, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?,null)");
         $stmt->bind_param('sssssssssss', $firstname, $lastname, $school_id, $program, $yearLevel, $sex, $address, $email, $password, $t, $mobilenumber);
@@ -36,9 +36,9 @@ function userInfoInserted($school_id, $firstname, $lastname, $sex, $program, $ye
         ?>
                     <script>
                         alert("Successfully Registered!")
-                        window.location.href = "/project/project-system/login.php"
+                        window.location.href = "login.php"
                     </script>
-                    <?php
+        <?php
         // header('location: /project/project-system/signup.php?feedback=Successfully Registered!');
     }
 }

@@ -1,3 +1,6 @@
+<?php
+require('./admin_function/login.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +26,7 @@
     <?php } ?>
     <div class="card">
         <div class="card-box">
-            <form action="./admin_function/login.php" method="POST" class="card-body p-5 text-center">
+            <form action="login.php" method="POST" class="card-body p-5 text-center">
                 <h2 id="text-admin">
                     Admin <br style="margin-bottom:4px"> Login</h2>
                 <div class="form-outline form-white mb-4">

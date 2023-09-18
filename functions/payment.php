@@ -27,7 +27,7 @@ if (isset($_POST['payment'])) {
         <script> window.location.href = '/project/project-system/bills.php'</script>
     <?php } else { ?>
         <script>alert("The reference number that you've entered was already used.")</script>
-        <script> window.location.href = '/project/project-system/bills.php'</script>
+        <script> window.location.href = '/bills.php'</script>
     <?php }
 }
 $rowid = $_POST['rowid'];

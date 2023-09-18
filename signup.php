@@ -16,8 +16,7 @@ session_start();
 
 <body>
     <div class="signup-form">
-        <form id="signUpForm" action="./functions/signup.php" method="POST" name="registerForm" class="needs-validation"
-            novalidate>
+        <form id="signUpForm" action="signup.php" method="POST" name="registerForm" class="needs-validation" novalidate>
             <h2>Register</h2>
             <p class=" hint-text">Create your account.</p>
             <div class="form-group">

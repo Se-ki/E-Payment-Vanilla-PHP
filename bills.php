@@ -237,7 +237,8 @@ date_default_timezone_set('Asia/Manila');
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="./myinfo.php">My info</a></li>
                 <li><a class="dropdown-item"
-                        href="./functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>">Logout</a></li>
+                        href="/functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>">Logout</a>
+                </li>
             </ul>
         </li>
     </header>
@@ -263,7 +264,7 @@ date_default_timezone_set('Asia/Manila');
                         <span class="nav_name">My Info</span>
                     </a>
                 </div>
-            </div> <a href="./functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>" class="nav_link"> <i
+            </div> <a href="functions/logout.php?id=<?php echo $_SESSION['student_id'] ?>" class="nav_link"> <i
                     class='bx bx-log-out nav_icon'></i> <span class="nav_name">Logout</span> </a>
         </nav>
     </div>

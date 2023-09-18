@@ -35,7 +35,7 @@ $fields = array(
         'attributes' => array(),
         'filter' => FILTER_SANITIZE_STRING,
         'filter_flags' => array(FILTER_FLAG_STRIP_LOW),
-    ),
+    ),  
     'amount' => array(
         'label' => 'Amount',
         'type' => 'number',

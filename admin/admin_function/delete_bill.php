@@ -7,7 +7,7 @@ $sql = "DELETE FROM bills WHERE bill_description = '$description'";
 $connection->query($sql);
 ?>
 <script>alert("Deleted Successfully!")</script>
-<script>window.location.href = "/project/project-system/admin/bills.php"</script>
+<script>window.location.href = "/admin/bills.php"</script>
 <?php
 // header('location: /project/project-system/admin/bills.php');
 ?>
